@@ -28,12 +28,14 @@ async function main() {
       core.exportVariable('SEMANTIC_RELEASE_MINOR', minor);
       core.exportVariable('SEMANTIC_RELEASE_PATCH', patch);
 
-      core.setOutput('testing', 'foo');
-
       // TODO: core.setOutput as well? What are outputs, how do they differ from env vars?
     } else {
       core.exportVariable('SEMANTIC_RELEASE', 'false');
-      core.setOutput('testing', 'foo');
+      core.setOutput('SEMANTIC_RELEASE', 'false');
+      core.setOutput('semantic_release_string', 'true');
+      core.setOutput('semantic_release_version', '1.0.4');
+      core.setOutput('semantic_release_bool', true);
+      core.setOutput('semanticReleaseBool', true);
       core.debug('No release published');
     }
   } catch (err) {
