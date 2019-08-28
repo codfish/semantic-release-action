@@ -4,6 +4,9 @@ author: 'codfish'
 branding:
   icon: 'arrow-up-right'
   color: 'orange'
+outputs:
+  testing:
+    description: foobar
 runs:
   using: 'docker'
   image: 'Dockerfile'
