@@ -1,4 +1,4 @@
-# semantic-release GitHub Action
+# semantic-release-action
 
 > GitHub Action for running `semantic-release`. Respects any .releaserc.js configuration file in
 > your repo. Exports [environment variables](#outputs) for you to use in subsequent actions
