@@ -5,7 +5,11 @@ branding:
   icon: 'arrow-up-right'
   color: 'orange'
 outputs:
-  testing:
+  semantic_release_bool:
+    description: foobar
+  semantic_release_version:
+    description: foobar
+  semantic_release_string:
     description: foobar
 runs:
   using: 'docker'
