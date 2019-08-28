@@ -1,0 +1,32 @@
+name: Validate & Release
+
+on: push
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run lint:md
+
+  release:
+    needs: validate
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: semantic-release
+        if: github.ref == 'refs/heads/master'
+        uses: ./
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

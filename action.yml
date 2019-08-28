@@ -1,0 +1,6 @@
+name: 'Semantic Release Action'
+description: 'Runs `semantic-release`. Respects .releaserc.js in your repo. Exports version variables for you to use in subsequent actions.'
+author: 'codfish'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
