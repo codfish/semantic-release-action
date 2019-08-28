@@ -33,6 +33,7 @@ async function main() {
       // TODO: core.setOutput as well? What are outputs, how do they differ from env vars?
     } else {
       core.exportVariable('SEMANTIC_RELEASE', 'false');
+      core.setOutput('testing', 'foo');
       core.debug('No release published');
     }
   } catch (err) {
