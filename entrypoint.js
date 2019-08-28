@@ -28,6 +28,8 @@ async function main() {
       core.exportVariable('SEMANTIC_RELEASE_MINOR', minor);
       core.exportVariable('SEMANTIC_RELEASE_PATCH', patch);
 
+      core.setOutput('testing', 'foo');
+
       // TODO: core.setOutput as well? What are outputs, how do they differ from env vars?
     } else {
       core.exportVariable('SEMANTIC_RELEASE', false);
