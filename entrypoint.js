@@ -22,7 +22,7 @@ async function main() {
       const minor = version.split('.')[1];
       const patch = version.split('.')[2];
 
-      core.exportVariable('SEMANTIC_RELEASE', true);
+      core.exportVariable('SEMANTIC_RELEASE', 'true');
       core.exportVariable('SEMANTIC_RELEASE_VERSION', version);
       core.exportVariable('SEMANTIC_RELEASE_MAJOR', major);
       core.exportVariable('SEMANTIC_RELEASE_MINOR', minor);
@@ -32,7 +32,7 @@ async function main() {
 
       // TODO: core.setOutput as well? What are outputs, how do they differ from env vars?
     } else {
-      core.exportVariable('SEMANTIC_RELEASE', false);
+      core.exportVariable('SEMANTIC_RELEASE', 'false');
       core.debug('No release published');
     }
   } catch (err) {
