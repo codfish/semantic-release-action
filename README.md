@@ -63,34 +63,13 @@ steps:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  # exit gracefully if no version was published
   - name: docker push version
+    if: steps.semantic.outputs.new-release-published == 'true'
     run: |
-      if [ "$NEW_RELEASE_PUBLISHED" == "false" ]; then exit 0; fi;
-      docker tag $DOCKER_REGISTRY/your-image $DOCKER_REGISTRY/your-image:$TAG
-      docker push $DOCKER_REGISTRY/your-image:$TAG
+      docker tag some-image some-image:$TAG
+      docker push some-image:$TAG
     env:
-      DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
       TAG: v$RELEASE_VERSION
-```
-
-**NOTE**: In theory we'll be able to handle this more gracefully in the future.
-[We're not able to access the `steps` context within an `if` expression yet](https://github.com/actions/toolkit/issues/96).
-
-**DOES NOT WORK YET:**
-
-```yml
-steps:
-  - uses: actions/checkout@master
-
-  - uses: codfish/semantic-release-action@master
-    id: semantic
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  - if: steps.semantic.outputs.new-release-published == 'true'
-    run: echo "A new release was published!!"
 ```
 
 Using environment variables set by `semantic-release-action`:

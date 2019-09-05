@@ -33,9 +33,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: test output
+        if: steps.semantic.outputs.new-release-published == 'true'
         run: |
           echo "$OUTPUTS"
-          echo new release? $NEW_RELEASE_PUBLISHED
+          echo "$NEW_RELEASE_PUBLISHED"
+          echo "$RELEASE_MAJOR"
+          echo "$RELEASE_MINOR"
+          echo "$RELEASE_PATH"
         env:
-          NEW_RELEASE_PUBLISHED: ${{ steps.semantic.outputs.new-release-published }}
           OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
