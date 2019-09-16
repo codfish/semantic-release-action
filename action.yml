@@ -4,6 +4,9 @@ author: 'codfish'
 branding:
   icon: 'arrow-up-right'
   color: 'orange'
+inputs:
+  branch:
+    description: "The branch on which releases should happen. https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branch"
 outputs:
   new-release-published:
     description: "Either `'true'` when a new release was published or `'false'` when no release was published"

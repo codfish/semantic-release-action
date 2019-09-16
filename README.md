@@ -146,8 +146,9 @@ I can easily leverage it across any project.
 
 **Docs:** https://help.github.com/en/articles/metadata-syntax-for-github-actions#inputs
 
-None yet. Might be a good idea to accept optional configuration values via inputs that would merge,
-yet override any `.releaserc.js` config file values. i.e. `branch`, etc.
+| Input Variable | Description                                 |
+| -------------- | ------------------------------------------- |
+| branch         | The branch on which releases should happen. |
 
 ### Outputs
 
