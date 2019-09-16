@@ -1,8 +1,15 @@
 const core = require('@actions/core');
 const semanticRelease = require('semantic-release');
 
+/**
+ * Run semantic-release.
+ *
+ * @see https://github.com/semantic-release/semantic-release/blob/master/docs/developer-guide/js-api.md
+ * @see https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#options
+ */
 async function run() {
-  const result = await semanticRelease();
+  const branch = core.getInput('branch', { required: false }) || 'master';
+  const result = await semanticRelease({ branch });
 
   if (!result) {
     core.debug('No release published');
