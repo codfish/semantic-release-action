@@ -110,8 +110,8 @@ module.exports = {
 
 ## Why
 
-It's fairly easy to run `semantic-release` as a "host action," aka something that simply runs
-directly on the VM.
+It's fairly easy to run `semantic-release` as a "host action," aka something that runs directly on
+the VM.
 
 ```yml
 steps:
