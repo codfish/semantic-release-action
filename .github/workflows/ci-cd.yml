@@ -39,6 +39,6 @@ jobs:
           echo "$NEW_RELEASE_PUBLISHED"
           echo "$RELEASE_MAJOR"
           echo "$RELEASE_MINOR"
-          echo "$RELEASE_PATH"
+          echo "$RELEASE_PATCH"
         env:
           OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
