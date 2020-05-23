@@ -13,12 +13,12 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.3",
-    "@babel/runtime": "^7.9.2",
+    "@actions/core": "^1.2.4",
+    "@babel/runtime": "^7.9.6",
     "semantic-release": "^17.0.7"
   },
   "devDependencies": {
-    "cod-scripts": "^4.0.2"
+    "cod-scripts": "^4.0.3"
   },
   "repository": {
     "type": "git",
