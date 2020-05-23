@@ -32,9 +32,7 @@ async function run() {
 
   // outputs
   const { version } = nextRelease;
-  const major = version.split('.')[0];
-  const minor = version.split('.')[1];
-  const patch = version.split('.')[2];
+  const [major, minor, patch] = version.split('.');
 
   // set outputs
   core.exportVariable('NEW_RELEASE_PUBLISHED', 'true');
