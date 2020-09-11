@@ -18,7 +18,7 @@
     "semantic-release": "^17.0.7"
   },
   "devDependencies": {
-    "cod-scripts": "^4.0.3"
+    "cod-scripts": "^5.0.0"
   },
   "repository": {
     "type": "git",
