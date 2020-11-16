@@ -15,7 +15,7 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@babel/runtime": "^7.9.6",
-    "semantic-release": "^17.0.7"
+    "semantic-release": "^17.2.2"
   },
   "devDependencies": {
     "cod-scripts": "^4.0.3"
