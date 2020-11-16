@@ -16,3 +16,22 @@ jobs:
       - run: npm ci
 
       - run: npm run lint
+
+      # dog-food testing. Should not release here at all, cause it's not on
+      # master.
+      - name: semantic-release
+        id: semantic
+        uses: ./
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: test output
+        if: steps.semantic.outputs.new-release-published == 'false'
+        run: |
+          echo "$OUTPUTS"
+          echo "should be false: $NEW_RELEASE_PUBLISHED"
+          echo "should be empty: $RELEASE_MAJOR"
+          echo "should be empty: $RELEASE_MINOR"
+          echo "should be empty: $RELEASE_PATCH"
+        env:
+          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
