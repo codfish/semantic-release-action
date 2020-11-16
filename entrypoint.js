@@ -44,7 +44,7 @@ async function run() {
   core.setOutput('release-version', version);
   core.setOutput('release-major', major);
   core.setOutput('release-minor', minor);
-  core.setOutput('release-patch', patch);
+  core.setOutput('release-patdch', patch);
 }
 
 run().catch(core.setFailed);
