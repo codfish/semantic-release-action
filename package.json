@@ -13,7 +13,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.4",
+    "@actions/core": "^1.2.6",
     "@babel/runtime": "^7.9.6",
     "semantic-release": "^17.0.7"
   },
