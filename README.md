@@ -1,39 +1,59 @@
 # semantic-release-action
 
-> GitHub Action for running `semantic-release`. Respects any .releaserc.js configuration file in
-> your repo. Exports [environment variables](#outputs) for you to use in subsequent actions
-> containing version numbers.
+> GitHub Action for running `semantic-release`. Respects any semantic-release configuration file in
+> your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
+> for you to use in subsequent actions containing version numbers.
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Usage](#usage)
+- [Why](#why)
+- [Configuration](#configuration)
+  - [Example with all inputs](#example-with-all-inputs)
+  - [Outputs](#outputs)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Usage
 
-See [action.yml](action.yml)
+See [action.yml](action.yml).
 
 - Use major version
   ([recommended by GitHub](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)):
   `uses: codfish/semantic-release-action@v1`
-- Use latest version: `uses: codfish/semantic-release-action@master`
+- Use latest version: `uses: codfish/semantic-release-action@v1`
 - Use specific version: `uses: codfish/semantic-release-action@v1.1.0`
 
-Basic Usage:
+**Note**: You can speed up runs by using pre-built docker images as well.
+
+```yml
+- uses: docker://codfish/semantic-release-action:v1
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+**Basic Usage:**
 
 ```yml
 steps:
   - uses: actions/checkout@master
 
-  - uses: codfish/semantic-release-action@master
+  - uses: codfish/semantic-release-action@v1
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-Using output variables set by `semantic-release-action`:
+**Using output variables set by `semantic-release-action`:**
 
 ```yml
 steps:
   - uses: actions/checkout@master
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@master
+  - uses: codfish/semantic-release-action@v1
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,19 +65,19 @@ steps:
     env:
       OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
 
-  - uses: codfish/some-other-action@master
+  - uses: codfish/some-other-action@v1
     with:
       release-version: ${{ steps.semantic.outputs.release-version }}
 ```
 
-Only run an action if a new version was created:
+**Only run an action if a new version was created:**
 
 ```yml
 steps:
   - uses: actions/checkout@master
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@master
+  - uses: codfish/semantic-release-action@v1
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -72,13 +92,13 @@ steps:
       TAG: v$RELEASE_VERSION
 ```
 
-Using environment variables set by `semantic-release-action`:
+**Using environment variables set by `semantic-release-action`:**
 
 ```yml
 steps:
   - uses: actions/checkout@master
 
-  - uses: codfish/semantic-release-action@master
+  - uses: codfish/semantic-release-action@v1
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -90,23 +110,8 @@ steps:
       echo $RELEASE_PATCH
 ```
 
-If you're _not_ publishing to npm and only want to use this action for GitHub releases, you need to
-include a `.releaserc.js` file in your repo, instructing `semantic-release` to not publish to the
-`npm` registry.
-
-Example `.releaserc.js` if you're not publishing to npm:
-
-```js
-module.exports = {
-  branch: 'master',
-  plugins: [
-    '@semantic-release/commit-analyzer',
-    '@semantic-release/release-notes-generator',
-    ['@semantic-release/npm', { npmPublish: false }],
-    '@semantic-release/github',
-  ],
-};
-```
+If you're _not_ publishing to npm and only want to use this action for GitHub releases, the easiest
+approach would simply be to add `"private": true,` to your `package.json`.
 
 ## Why
 
@@ -142,13 +147,66 @@ new release number is.
 This also scales well, just in case I want to add some flexibility and functionality to this action,
 I can easily leverage it across any project.
 
-## Inputs
+## Configuration
 
-**Docs:** https://help.github.com/en/articles/metadata-syntax-for-github-actions#inputs
+You can pass in `semantic-release` configuration options via GitHub Action inputs using `with`.
 
-| Input Variable | Description                                 |
-| -------------- | ------------------------------------------- |
-| branch         | The branch on which releases should happen. |
+It's important to note, **NONE** of these inputs are required. The action will automatically use any
+[`semantic-release` configuration](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
+found in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)
+
+> NOTE: Each input **will take precedence** over options configured in the configuration file and
+> shareable configurations.
+
+| Input Variable | Description                                                                                                                                               |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| branches       | The branches on which releases should happen.                                                                                                             |
+| plugins        | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                  |
+| extends        | List of modules or file paths containing a shareable configuration.                                                                                       |
+| dry_run        | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail. |
+| repository_url | The git repository URL                                                                                                                                    |
+| tag_format     | The Git tag format used by semantic-release to identify releases.                                                                                         |
+
+**Note**: The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use `branches`
+instead. Previously used in semantic-release v15 to set a single branch on which releases should
+happen.
+
+- **GitHub Actions Inputs:**
+  https://help.github.com/en/articles/metadata-syntax-for-github-actions#inputs
+- **Semantic Release Configuration:**
+  https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md
+
+### Example with all inputs
+
+```yml
+steps:
+  - run: codfish/semantic-release-action@v1
+    with:
+      dry_run: true
+      branches: |
+        [
+          '+([0-9])?(.{+([0-9]),x}).x',
+          'master',
+          'next',
+          'next-major',
+          {
+            name: 'beta',
+            prerelease: true
+          },
+          {
+            name: 'alpha',
+            prerelease: true
+          }
+        ]
+      repository_url: https://github.com/codfish/semantic-release-action.git
+      tag_format: 'v${version}'
+      extends: '@semantic-release/apm-config'
+      plugins: |
+        ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/npm', '@semantic-release/github']
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
 
 ### Outputs
 

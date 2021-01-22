@@ -7,10 +7,44 @@ branding:
   icon: 'arrow-up-right'
   color: 'orange'
 inputs:
+  branches:
+    description:
+      'The branches on which releases should happen.
+      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branches'
+    required: false
+  plugins:
+    description:
+      'Define the list of plugins to use. Plugins will run in series, in the order defined, for each
+      steps if they implement it.
+      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#plugins'
+    required: false
+  extends:
+    description:
+      'List of modules or file paths containing a shareable configuration.
+      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends'
+    required: false
+  dry_run:
+    description:
+      'The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode
+      skips the following steps: prepare, publish, success and fail.
+      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#dryrun'
+    required: false
+  repository_url:
+    description:
+      'The git repository URL.
+      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#repositoryurl'
+    required: false
+  tag_format:
+    description:
+      'The Git tag format used by semantic-release to identify releases.
+      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat'
+    required: false
   branch:
     description:
-      'The branch on which releases should happen.
-      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branch'
+      'DEPRECATED. Will continue to be supported for v1. Use `branches` instead. Previously used in
+      semantic-release v15 to set a single branch on which releases should happen.
+      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branches'
+    required: false
 outputs:
   new-release-published:
     description:
