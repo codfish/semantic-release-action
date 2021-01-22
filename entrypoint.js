@@ -21,7 +21,8 @@ async function run() {
   const branches = parseInput(core.getInput('branches', { required: false }));
   const plugins = parseInput(core.getInput('plugins', { required: false }));
   const extendsInput = parseInput(core.getInput('extends', { required: false }));
-  const dryRun = core.getInput('dry_run', { required: false }) === 'true';
+  let dryRun = core.getInput('dry_run', { required: false });
+  dryRun = dryRun !== '' ? dryRun === 'true' : '';
   const repositoryUrl = core.getInput('repository_url', { required: false });
   const tagFormat = core.getInput('tag_format', { required: false });
 
@@ -43,8 +44,15 @@ async function run() {
     repositoryUrl,
     tagFormat,
   };
-  // remove undefined options
-  Object.keys(options).forEach(key => options[key] === undefined && delete options[key]);
+
+  core.debug(`options before cleanup: ${JSON.stringify(options)}`);
+
+  // remove falsey options
+  Object.keys(options).forEach(
+    key => (options[key] === undefined || options[key] === '') && delete options[key],
+  );
+
+  core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 
   const result = await semanticRelease(options);
   if (!result) {
