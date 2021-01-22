@@ -45,6 +45,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # dog-food testing. Should not release here at all, cause it runs on a PR.
+      - name: semantic-release with no inputs
+        id: semantic
+        uses: ./
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: test output
         if: steps.semantic.outputs.new-release-published == 'false'
         run: |
