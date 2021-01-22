@@ -12,34 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      # dry-run testing
-      - name: testing action with all inputs
-        id: semantic
-        uses: ./
-        with:
-          dry_run: true
-          branches: |
-            [
-              '+([0-9])?(.{+([0-9]),x}).x',
-              'master',
-              'next',
-              'next-major',
-              {
-                name: 'beta',
-                prerelease: true
-              },
-              {
-                name: 'alpha',
-                prerelease: true
-              }
-            ]
-          repository_url: https://github.com/codfish/semantic-release-action.git
-          tag_format: 'v${version}'
-          plugins: |
-            ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/npm', '@semantic-release/github']
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: semantic-release
         id: semantic
         uses: ./

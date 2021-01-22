@@ -19,7 +19,7 @@ jobs:
 
       # dog-food testing. Should not release here at all, cause it runs on a PR.
       - name: semantic-release
-        id: semantic
+        id: semantic-test
         uses: ./
         with:
           dry_run: true
