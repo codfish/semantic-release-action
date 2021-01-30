@@ -8,6 +8,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Usage](#usage)
+  - [Basic Usage](#basic-usage)
 - [Why](#why)
 - [Configuration](#configuration)
   - [Example with all inputs](#example-with-all-inputs)
@@ -19,26 +20,39 @@
 
 See [action.yml](action.yml).
 
-- Use major version
-  ([recommended by GitHub](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)):
-  `uses: codfish/semantic-release-action@v1`
-- Use latest version: `uses: codfish/semantic-release-action@v1`
-- Use specific version: `uses: codfish/semantic-release-action@v1.1.0`
-
-**Note**: You can speed up runs by using pre-built docker images as well.
-
-```yml
-- uses: docker://codfish/semantic-release-action:v1
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-```
-
-**Basic Usage:**
+Referencing the major version is
+([recommended by GitHub](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)).
 
 ```yml
 steps:
-  - uses: actions/checkout@master
+  # Reference the major version of a release
+  - uses: codfish/semantic-release-action@v1
+  # Reference a specific commit
+  - uses: codfish/semantic-release-action@c4074285a1651e4fecab9c14974d5e01b4625edf
+  # Reference a minor version of a release
+  - uses: codfish/semantic-release-action@v1.2
+  # Reference a branch
+  - uses: codfish/semantic-release-action@master
+```
+
+> **Note**: Whenever you use a custom docker-based GitHub Action like this one, you may notice in
+> your run logs, one of the first steps you'll see will be GA building the image for you. You can
+> speed up runs by pulling pre-built docker images instead of making GitHub Actions build them on
+> every run.
+
+```yml
+steps:
+  # Reference a docker image from GitHub Container Registry
+  - uses: docker://ghcr.io/codfish/semantic-release-action@v1
+  # Reference a docker image from Dockerhub
+  - uses: docker://codfish/semantic-release-action@v1
+```
+
+### Basic Usage
+
+```yml
+steps:
+  - uses: actions/checkout@v1
 
   - uses: codfish/semantic-release-action@v1
     env:
@@ -50,7 +64,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@master
+  - uses: actions/checkout@v1
 
   # you'll need to add an `id` in order to access output variables
   - uses: codfish/semantic-release-action@v1
@@ -70,11 +84,11 @@ steps:
       release-version: ${{ steps.semantic.outputs.release-version }}
 ```
 
-**Only run an action if a new version was created:**
+**Example:** Only run an action if a new version was created.
 
 ```yml
 steps:
-  - uses: actions/checkout@master
+  - uses: actions/checkout@v1
 
   # you'll need to add an `id` in order to access output variables
   - uses: codfish/semantic-release-action@v1
@@ -96,7 +110,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@master
+  - uses: actions/checkout@v1
 
   - uses: codfish/semantic-release-action@v1
     env:
