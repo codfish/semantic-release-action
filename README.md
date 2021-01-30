@@ -13,6 +13,7 @@
 - [Configuration](#configuration)
   - [Example with all inputs](#example-with-all-inputs)
   - [Outputs](#outputs)
+- [Maintenance](#maintenance)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -43,9 +44,9 @@ steps:
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action@v1
+  - uses: docker://ghcr.io/codfish/semantic-release-action:v1
   # Reference a docker image from Dockerhub
-  - uses: docker://codfish/semantic-release-action@v1
+  - uses: docker://codfish/semantic-release-action:v1
 ```
 
 ### Basic Usage
@@ -169,8 +170,8 @@ It's important to note, **NONE** of these inputs are required. The action will a
 [`semantic-release` configuration](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
 found in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)
 
-> NOTE: Each input **will take precedence** over options configured in the configuration file and
-> shareable configurations.
+> **Note**: Each input **will take precedence** over options configured in the configuration file
+> and shareable configurations.
 
 | Input Variable | Description                                                                                                                                               |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -249,3 +250,17 @@ might be so this is a way to cover more cases.
 | RELEASE_MAJOR         | The new releases' major version number, i.e. `1`                                                                                                  |
 | RELEASE_MINOR         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | RELEASE_PATCH         | The new releases' patch version number, i.e. `3`                                                                                                  |
+
+## Maintenance
+
+> Make the new release available to those binding to the major version tag: Move the major version
+> tag (v1, v2, etc.) to point to the ref of the current release. This will act as the stable release
+> for that major version. You should keep this tag updated to the most recent stable minor/patch
+> release.
+
+```sh
+git tag -fa v1 -m "Update v1 tag" && git push origin v1 --force
+```
+
+**Reference**:
+https://github.com/actions/toolkit/blob/master/docs/action-versioning.md#recommendations
