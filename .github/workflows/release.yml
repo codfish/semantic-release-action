@@ -28,3 +28,26 @@ jobs:
           echo "$RELEASE_PATCH"
         env:
           OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
+
+      - name: docker login
+        run: |
+          echo "$GCR_TOKEN" | docker login ghcr.io -u codfish --password-stdin
+        env:
+          GCR_TOKEN: ${{ secrets.GCR_TOKEN }}
+
+      # Dockerhub is auto synced with the repo, no need to explicitly deploy
+      - name: build and push latest docker image to GCR
+        run: |
+          docker build -t ghcr.io/codfish/semantic-release-action:latest .
+          docker push ghcr.io/codfish/semantic-release-action:latest
+
+      - name: push docker images for releases to GCR
+        if: steps.semantic.outputs.new-release-published == 'true'
+        run: |
+          docker tag ghcr.io/codfish/semantic-release-action ghcr.io/codfish/semantic-release-action:$VERSION_TAG
+          docker tag ghcr.io/codfish/semantic-release-action ghcr.io/codfish/semantic-release-action:$MAJOR_TAG
+          docker push ghcr.io/codfish/semantic-release-action:$VERSION_TAG
+          docker push ghcr.io/codfish/semantic-release-action:$MAJOR_TAG
+        env:
+          VERSION_TAG: v${{ steps.semantic.outputs.release-version }}
+          MAJOR_TAG: v${{ steps.semantic.outputs.release-major }}
