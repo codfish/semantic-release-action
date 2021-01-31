@@ -49,6 +49,21 @@ steps:
   - uses: docker://codfish/semantic-release-action:v1
 ```
 
+If you're security conscious, you can
+[pin the docker image down to a specific digest](https://francoisbest.com/posts/2020/the-security-of-github-actions#docker-based-actions)
+instead of using an image tag, which is a mutable reference.
+
+```yml
+steps:
+  # Reference a docker image from GitHub Container Registry
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:16ab6c16b1bff6bebdbcc6cfc07dfafff49d23c6818490500b8edb3babfff29e
+```
+
+Inspect the
+[image version you want here](https://github.com/users/codfish/packages/container/package/semantic-release-action)
+to find the digest. If you prefer pulling from
+[Docker Hub, check here](https://hub.docker.com/repository/docker/codfish/semantic-release-action/tags).
+
 ### Basic Usage
 
 ```yml
