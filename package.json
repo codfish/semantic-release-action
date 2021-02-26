@@ -15,10 +15,10 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "json5": "^2.2.0",
-    "semantic-release": "^17.3.9"
+    "semantic-release": "^17.4.0"
   },
   "devDependencies": {
-    "cod-scripts": "^6.0.0"
+    "cod-scripts": "^6.1.0"
   },
   "repository": {
     "type": "git",
