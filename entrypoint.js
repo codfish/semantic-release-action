@@ -21,10 +21,12 @@ async function run() {
   const branches = parseInput(core.getInput('branches', { required: false }));
   const plugins = parseInput(core.getInput('plugins', { required: false }));
   const extendsInput = parseInput(core.getInput('extends', { required: false }));
-  let dryRun = core.getInput('dry_run', { required: false });
-  dryRun = dryRun !== '' ? dryRun === 'true' : '';
   const repositoryUrl = core.getInput('repository_url', { required: false });
   const tagFormat = core.getInput('tag_format', { required: false });
+  let dryRun = core.getInput('dry_run', { required: false });
+  dryRun = dryRun !== '' ? dryRun === 'true' : '';
+  let ci = core.getInput('ci', { required: false });
+  ci = ci !== '' ? ci === 'true' : '';
 
   core.debug(`branch input: ${branch}`);
   core.debug(`branches input: ${branches}`);
@@ -33,6 +35,7 @@ async function run() {
   core.debug(`dry_run input: ${dryRun}`);
   core.debug(`repository_url input: ${repositoryUrl}`);
   core.debug(`tag_format input: ${tagFormat}`);
+  core.debug(`ci input: ${ci}`);
 
   // build options object
   const branchOption = branch ? { branches: branch } : { branches };
