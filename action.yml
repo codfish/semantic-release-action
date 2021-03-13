@@ -45,6 +45,10 @@ inputs:
       semantic-release v15 to set a single branch on which releases should happen.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branches'
     required: false
+  ci:
+    description:
+      'sadf'
+    required: false
 outputs:
   new-release-published:
     description:
