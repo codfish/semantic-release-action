@@ -46,7 +46,7 @@ async function run() {
     dryRun,
     repositoryUrl,
     tagFormat,
-    skipTag: true,
+    ci,
   };
 
   core.debug(`options before cleanup: ${JSON.stringify(options)}`);
