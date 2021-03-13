@@ -255,6 +255,8 @@ might be so this is a way to cover more cases.
 | release-major         | The new releases' major version number, i.e. `1`                                                                                                  |
 | release-minor         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | release-patch         | The new releases' patch version number, i.e. `3`                                                                                                  |
+| release-channel       | The npm distribution channel of the new release.                                                                                                  |
+| release-notes         | The release notes of the next release.                                                                                                  |
 
 **Environment Variables**:
 
@@ -265,6 +267,8 @@ might be so this is a way to cover more cases.
 | RELEASE_MAJOR         | The new releases' major version number, i.e. `1`                                                                                                  |
 | RELEASE_MINOR         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | RELEASE_PATCH         | The new releases' patch version number, i.e. `3`                                                                                                  |
+| RELEASE_CHANNEL       | The npm distribution channel of the new release.                                                                                                  |
+| RELEASE_NOTES         | The release notes of the next release.                                                                                                 |
 
 ## Maintenance
 
