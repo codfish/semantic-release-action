@@ -1,4 +1,4 @@
-FROM node:12.20.1
+FROM node:12.20.2
 
 # nice clean home for our action files
 RUN mkdir /action
