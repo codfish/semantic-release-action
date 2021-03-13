@@ -7,11 +7,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v1
         with:
           node-version: 12.x
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
 
       - run: npm ci
 
@@ -45,10 +52,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # dog-food testing. Should not release here at all, cause it runs on a PR.
-      - name: semantic-release with no inputs
+      # dog-food testing dry-run using the PR branch to test outputs
+      - name: semantic-release-test
         id: semantic
         uses: ./
+        with:
+          dry_run: true
+          ci: false
+          branches: ${{ github.head_ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
