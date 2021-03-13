@@ -8,11 +8,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-
-      - run: git rev-parse --abbrev-ref HEAD
 
       - uses: actions/setup-node@v1
         with:
@@ -48,7 +43,7 @@ jobs:
                 name: 'alpha',
                 prerelease: true
               },
-              "${{ github.head_ref }}"
+              "${{ github.ref }}"
             ]
           repository_url: https://github.com/codfish/semantic-release-action.git
           tag_format: 'v${version}'
@@ -64,7 +59,7 @@ jobs:
         with:
           dry_run: true
           ci: false
-          branches: ${{ github.head_ref }}
+          branches: "${{ github.ref }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
