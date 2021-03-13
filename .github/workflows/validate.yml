@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v1
         with:
@@ -51,13 +53,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # dog-food testing dry-run using the PR branch to test outputs
-      - name: semantic-release-test
+      - name: semantic-release-pr-test
         id: semantic
         uses: ./
         with:
           dry_run: true
           ci: false
-          branches: ${{ github.head_ref }}
+          branches: ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
