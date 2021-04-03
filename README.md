@@ -181,23 +181,28 @@ I can easily leverage it across any project.
 
 You can pass in `semantic-release` configuration options via GitHub Action inputs using `with`.
 
-It's important to note, **NONE** of these inputs are required. The action will automatically use any
+It's important to note, **NONE** of these inputs are required. Semantic release has a default configuration that it will use if you don't provide any.
+
+Also of note, if you'd like to override the default configuration and you'd rather not use the inputs here, the action will automatically use any
 [`semantic-release` configuration](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
-found in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)
+defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)
 
 > **Note**: Each input **will take precedence** over options configured in the configuration file
 > and shareable configurations.
 
-| Input Variable | Description                                                                                                                                               |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| branches       | The branches on which releases should happen.                                                                                                             |
-| plugins        | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                  |
-| extends        | List of modules or file paths containing a shareable configuration.                                                                                       |
-| dry_run        | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail. |
-| repository_url | The git repository URL                                                                                                                                    |
-| tag_format     | The Git tag format used by semantic-release to identify releases.                                                                                         |
+| Input Variable     | Type | Description                                                                                                                                               |
+| --------------     | ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| branches           | `Array`, `String`, `Object`     | The branches on which releases should happen.                                                                                                             |
+| plugins            | `Array` | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                  |
+| extends            | `Array`, `String`  | List of modules or file paths containing a shareable configuration.                                                                                       |
+| additional_packages |  `Array`, `String`  | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. |
+| dry_run            | `Boolean`   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail. |
+| repository_url     | `String`  | The git repository URL                                                                                                                                    |
+| tag_format         |  `String`    | The Git tag format used by semantic-release to identify releases.                                                                                         |
 
-**Note**: The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use `branches`
+> **Note**: `additional_packages` won't get used automatically, setting this variable will just install them so you can use them. You'll need to actually list them in your `plugins` and/or `extends` configuration for **semantic-release** to use them.
+
+> **Note**: The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use `branches`
 instead. Previously used in semantic-release v15 to set a single branch on which releases should
 happen.
 
@@ -231,8 +236,10 @@ steps:
       repository_url: https://github.com/codfish/semantic-release-action.git
       tag_format: 'v${version}'
       extends: '@semantic-release/apm-config'
+      additional_packages: |
+        ['@semantic-release/apm@3.0.0', '@semantic-release/git', '@semantic-release/apm-config']
       plugins: |
-        ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/npm', '@semantic-release/github']
+        ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/apm', '@semantic-release/git']
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
