@@ -41,10 +41,9 @@ jobs:
           repository_url: https://github.com/codfish/semantic-release-action.git
           tag_format: 'v${version}'
           extends: '@semantic-release/apm-config'
-          additional_packages: |
-            ['@semantic-release/apm@3.0.0', '@semantic-release/git', '@semantic-release/apm-config']
+          additional_packages: '@semantic-release/apm-config'
           plugins: |
-            ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/apm', '@semantic-release/git']
+            ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/npm']
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
