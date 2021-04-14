@@ -13,7 +13,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.2.7",
     "json5": "^2.2.0",
     "semantic-release": "^17.4.0"
   },
