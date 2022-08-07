@@ -12,16 +12,24 @@ inputs:
       'The branches on which releases should happen.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branches'
     required: false
+  extends:
+    description:
+      'List of modules or file paths containing .
+      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends'
+    required: false
   plugins:
     description:
       'Define the list of plugins to use. Plugins will run in series, in the order defined, for each
       steps if they implement it.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#plugins'
     required: false
-  extends:
+  additional_packages:
     description:
-      'List of modules or file paths containing a shareable configuration.
-      https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends'
+      'Define a list of additional plugins or shareable configurations (official or community) to
+      install. Use this if you 1) use any plugins other than commit-analyzer, release-notes-generator,
+      github, or npm, which are already installed along with semantic-release or 2) want to extend
+      from a shareable configuration.
+      https://semantic-release.gitbook.io/semantic-release/extending/plugins-list'
     required: false
   dry_run:
     description:

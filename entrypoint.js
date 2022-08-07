@@ -1,12 +1,33 @@
+const { spawnSync } = require('child_process');
 const core = require('@actions/core');
 const semanticRelease = require('semantic-release');
 const JSON5 = require('json5');
+const arrify = require('arrify');
 
 const parseInput = input => {
   try {
     return JSON5.parse(input);
   } catch (err) {
     return input;
+  }
+};
+
+/**
+ * Install npm packages.
+ *
+ * @param {string|string[]} packages - List of packages to install.
+ * @returns {object} - Response from `child_process.spawnSync()`.
+ */
+const installPackages = packages => {
+  try {
+    const packagesArr = arrify(packages);
+    core.debug(`Installing additional packages: ${packagesArr}`);
+    const result = spawnSync('npm', ['install', '--no-save', ...packagesArr]);
+    core.debug(`Packages installed.`);
+    return result;
+  } catch (err) {
+    core.debug(`Error installing additional packages: ${packages}`);
+    throw err;
   }
 };
 
@@ -20,6 +41,7 @@ async function run() {
   const branch = parseInput(core.getInput('branch', { required: false }));
   const branches = parseInput(core.getInput('branches', { required: false }));
   const plugins = parseInput(core.getInput('plugins', { required: false }));
+  const additionalPackages = parseInput(core.getInput('additional_packages', { required: false }));
   const extendsInput = parseInput(core.getInput('extends', { required: false }));
   let dryRun = core.getInput('dry_run', { required: false });
   dryRun = dryRun !== '' ? dryRun === 'true' : '';
@@ -33,6 +55,11 @@ async function run() {
   core.debug(`dry_run input: ${dryRun}`);
   core.debug(`repository_url input: ${repositoryUrl}`);
   core.debug(`tag_format input: ${tagFormat}`);
+
+  // install additional packages
+  if (additionalPackages) {
+    installPackages(additionalPackages);
+  }
 
   // build options object
   const branchOption = branch ? { branches: branch } : { branches };
