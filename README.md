@@ -2,7 +2,7 @@
 
 > GitHub Action for running `semantic-release`. Respects any semantic-release configuration file in
 > your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
-> for you to use in subsequent actions containing version numbers.
+> for you to use in subsequent actions containing version numbers
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
