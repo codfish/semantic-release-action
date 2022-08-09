@@ -22,7 +22,7 @@
 See [action.yml](action.yml).
 
 Referencing the major version is
-([recommended by GitHub](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)).
+([recommended by GitHub](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md)).
 
 ```yml
 steps:
@@ -33,7 +33,7 @@ steps:
   # Reference a minor version of a release
   - uses: codfish/semantic-release-action@v1.10
   # Reference a branch
-  - uses: codfish/semantic-release-action@master
+  - uses: codfish/semantic-release-action@main
 ```
 
 > **Note**: Whenever you use a custom docker-based GitHub Action like this one, you may notice in
@@ -66,11 +66,32 @@ to find the digest. If you prefer pulling from
 
 ### Basic Usage
 
+> **Note**: Until [this semantic-release pr](https://github.com/semantic-release/semantic-release/pull/1737) gets merged, `main` is not a supported branch by default. If your repository is using `main` as the default branch which is extremely common, you need to pass the branches input into the action, or define it in your semantic-release config explicitly.
+> See: https://github.com/semantic-release/semantic-release/pull/1737
+
 ```yml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v3
 
   - uses: codfish/semantic-release-action@v2
+    with:
+      # specify default branches to add support for the `main` branch
+      # which semantic-release doesn't have as a default yet.
+      branches: |
+        [
+          '+([0-9])?(.{+([0-9]),x}).x',
+          'main',
+          'next',
+          'next-major',
+          {
+            name: 'beta',
+            prerelease: true
+          },
+          {
+            name: 'alpha',
+            prerelease: true
+          }
+        ]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -80,7 +101,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v3
 
   # you'll need to add an `id` in order to access output variables
   - uses: codfish/semantic-release-action@v2
@@ -104,7 +125,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v3
 
   # you'll need to add an `id` in order to access output variables
   - uses: codfish/semantic-release-action@v2
@@ -126,7 +147,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v2
+  - uses: actions/checkout@v3
 
   - uses: codfish/semantic-release-action@v2
     env:
@@ -223,7 +244,7 @@ steps:
       branches: |
         [
           '+([0-9])?(.{+([0-9]),x}).x',
-          'master',
+          'main',
           'next',
           'next-major',
           {
@@ -289,4 +310,4 @@ git tag -fa v2 -m "Update v2 tag" && git push origin v2 --force
 ```
 
 **Reference**:
-https://github.com/actions/toolkit/blob/master/docs/action-versioning.md#recommendations
+https://github.com/actions/toolkit/blob/main/docs/action-versioning.md#recommendations
