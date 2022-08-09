@@ -55,8 +55,8 @@ instead of using an image tag, which is a mutable reference.
 
 ```yml
 steps:
-  # Reference a docker image from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:16ab6c16b1bff6bebdbcc6cfc07dfafff49d23c6818490500b8edb3babfff29e
+  # Reference a docker image from GitHub Container Registry (example for v2.0.0)
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:91ea452696d93a34a30aff20b34614b75e8fddc82b598fc8fa57c3ac07e6d6da
 ```
 
 Inspect the
