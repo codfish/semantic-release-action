@@ -13,10 +13,10 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.9.1",
     "arrify": "^2.0.1",
-    "json5": "^2.2.0",
-    "semantic-release": "^17.4.0"
+    "json5": "^2.2.1",
+    "semantic-release": "^19.0.3"
   },
   "devDependencies": {
     "cod-scripts": "^6.1.0"

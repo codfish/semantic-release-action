@@ -22,9 +22,14 @@ const installPackages = packages => {
   try {
     const packagesArr = arrify(packages);
     core.debug(`Installing additional packages: ${packagesArr}`);
-    const result = spawnSync('npm', ['install', '--no-save', ...packagesArr]);
+    const spawn = spawnSync('npm', ['install', '--no-save', ...packagesArr], {
+      stdio: ['inherit', 'inherit', 'pipe'],
+    });
+    if (spawn.status !== 0) {
+      throw new Error(spawn.stderr);
+    }
     core.debug(`Packages installed.`);
-    return result;
+    return spawn;
   } catch (err) {
     core.debug(`Error installing additional packages: ${packages}`);
     throw err;
@@ -41,7 +46,8 @@ async function run() {
   const branch = parseInput(core.getInput('branch', { required: false }));
   const branches = parseInput(core.getInput('branches', { required: false }));
   const plugins = parseInput(core.getInput('plugins', { required: false }));
-  const additionalPackages = parseInput(core.getInput('additional_packages', { required: false }));
+  const additionalPackages =
+    parseInput(core.getInput('additional_packages', { required: false })) || [];
   const extendsInput = parseInput(core.getInput('extends', { required: false }));
   let dryRun = core.getInput('dry_run', { required: false });
   dryRun = dryRun !== '' ? dryRun === 'true' : '';
@@ -51,13 +57,17 @@ async function run() {
   core.debug(`branch input: ${branch}`);
   core.debug(`branches input: ${branches}`);
   core.debug(`plugins input: ${plugins}`);
+  core.debug(`additional_packages input: ${additionalPackages}`);
   core.debug(`extends input: ${extendsInput}`);
   core.debug(`dry_run input: ${dryRun}`);
   core.debug(`repository_url input: ${repositoryUrl}`);
   core.debug(`tag_format input: ${tagFormat}`);
 
-  // install additional packages
-  if (additionalPackages) {
+  // install additional plugins & shareable configurations
+  if (extendsInput) {
+    additionalPackages.push(...arrify(extendsInput));
+  }
+  if (additionalPackages.length) {
     installPackages(additionalPackages);
   }
 
