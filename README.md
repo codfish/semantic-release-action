@@ -27,11 +27,11 @@ Referencing the major version is
 ```yml
 steps:
   # Reference the major version of a release
-  - uses: codfish/semantic-release-action@v1
+  - uses: codfish/semantic-release-action@v2
   # Reference a specific commit
   - uses: codfish/semantic-release-action@c4074285a1651e4fecab9c14974d5e01b4625edf
   # Reference a minor version of a release
-  - uses: codfish/semantic-release-action@v1.2
+  - uses: codfish/semantic-release-action@v1.10
   # Reference a branch
   - uses: codfish/semantic-release-action@master
 ```
@@ -44,12 +44,12 @@ steps:
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action:v1
+  - uses: docker://ghcr.io/codfish/semantic-release-action:v2
   # Reference a docker image from Dockerhub
-  - uses: docker://codfish/semantic-release-action:v1
+  - uses: docker://codfish/semantic-release-action:v2
 ```
 
-If you're security conscious, you can
+**If you're security conscious**, you can
 [pin the docker image down to a specific digest](https://francoisbest.com/posts/2020/the-security-of-github-actions#docker-based-actions)
 instead of using an image tag, which is a mutable reference.
 
@@ -68,9 +68,9 @@ to find the digest. If you prefer pulling from
 
 ```yml
 steps:
-  - uses: actions/checkout@v1
+  - uses: actions/checkout@v2
 
-  - uses: codfish/semantic-release-action@v1
+  - uses: codfish/semantic-release-action@v2
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -80,10 +80,10 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v1
+  - uses: actions/checkout@v2
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v1
+  - uses: codfish/semantic-release-action@v2
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -104,10 +104,10 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v1
+  - uses: actions/checkout@v2
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v1
+  - uses: codfish/semantic-release-action@v2
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -126,9 +126,9 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v1
+  - uses: actions/checkout@v2
 
-  - uses: codfish/semantic-release-action@v1
+  - uses: codfish/semantic-release-action@v2
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -200,6 +200,8 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 | repository_url     | `String`  | The git repository URL                                                                                                                                    |
 | tag_format         |  `String`    | The Git tag format used by semantic-release to identify releases.                                                                                         |
 
+> **Note**: Any package specified in `extends` or `additional_packages` will be installed automatically for you as a convenience, allowing you to use this action without adding new dependencies to your application or install deps in a separate action step.
+
 > **Note**: `additional_packages` won't get used automatically, setting this variable will just install them so you can use them. You'll need to actually list them in your `plugins` and/or `extends` configuration for **semantic-release** to use them.
 
 > **Note**: The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use `branches`
@@ -215,7 +217,7 @@ happen.
 
 ```yml
 steps:
-  - run: codfish/semantic-release-action@v1
+  - run: codfish/semantic-release-action@v2
     with:
       dry_run: true
       branches: |
@@ -237,7 +239,7 @@ steps:
       tag_format: 'v${version}'
       extends: '@semantic-release/apm-config'
       additional_packages: |
-        ['@semantic-release/apm@3.0.0', '@semantic-release/git', '@semantic-release/apm-config']
+        ['@semantic-release/apm@4.0.0', '@semantic-release/git']
       plugins: |
         ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/apm', '@semantic-release/git']
     env:
@@ -283,7 +285,7 @@ might be so this is a way to cover more cases.
 > release.
 
 ```sh
-git tag -fa v1 -m "Update v1 tag" && git push origin v1 --force
+git tag -fa v2 -m "Update v2 tag" && git push origin v2 --force
 ```
 
 **Reference**:
