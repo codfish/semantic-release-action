@@ -14,7 +14,7 @@ inputs:
     required: false
   extends:
     description:
-      'List of modules or file paths containing .
+      'String or array of modules or file paths containing a shareable configuration.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends'
     required: false
   plugins:
