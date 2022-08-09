@@ -63,7 +63,7 @@ async function run() {
   core.debug(`repository_url input: ${repositoryUrl}`);
   core.debug(`tag_format input: ${tagFormat}`);
 
-  // install additional plugins & shareable configurations
+  // install additional plugins/configurations
   if (extendsInput) {
     additionalPackages.push(...arrify(extendsInput));
   }
