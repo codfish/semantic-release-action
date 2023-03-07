@@ -13,7 +13,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.9.1",
+    "@actions/core": "^1.10.0",
     "arrify": "^2.0.1",
     "json5": "^2.2.1",
     "semantic-release": "^19.0.3"
