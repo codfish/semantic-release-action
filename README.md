@@ -29,7 +29,7 @@ steps:
   # Reference the major version of a release
   - uses: codfish/semantic-release-action@v2
   # Reference a specific commit
-  - uses: codfish/semantic-release-action@c4074285a1651e4fecab9c14974d5e01b4625edf
+  - uses: codfish/semantic-release-action@4e0079a1e7511dab622628e1bf298e572a9f3d22
   # Reference a minor version of a release
   - uses: codfish/semantic-release-action@v1.10
   # Reference a branch
@@ -56,7 +56,7 @@ instead of using an image tag, which is a mutable reference.
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry (example for v2.0.0)
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:91ea452696d93a34a30aff20b34614b75e8fddc82b598fc8fa57c3ac07e6d6da
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:601fd6c1db9efbcfabd34ba4563e7d0b9eb0f8ba11316e3e7d6a9b6883dac8ba
 ```
 
 Inspect the
