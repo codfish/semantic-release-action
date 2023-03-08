@@ -26,9 +26,9 @@ inputs:
   additional_packages:
     description:
       'Define a list of additional plugins or shareable configurations (official or community) to
-      install. Use this if you 1) use any plugins other than commit-analyzer, release-notes-generator,
-      github, or npm, which are already installed along with semantic-release or 2) want to extend
-      from a shareable configuration.
+      install. Use this if you 1) use any plugins other than commit-analyzer,
+      release-notes-generator, github, or npm, which are already installed along with
+      semantic-release or 2) want to extend from a shareable configuration.
       https://semantic-release.gitbook.io/semantic-release/extending/plugins-list'
     required: false
   dry_run:

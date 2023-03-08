@@ -1,10 +1,10 @@
-const { spawnSync } = require('child_process');
-const core = require('@actions/core');
-const semanticRelease = require('semantic-release');
-const JSON5 = require('json5');
-const arrify = require('arrify');
+import * as childProcess from 'child_process';
+import core from '@actions/core';
+import semanticRelease from 'semantic-release';
+import JSON5 from 'json5';
+import arrify from 'arrify';
 
-const parseInput = input => {
+const parseInput = (input) => {
   try {
     return JSON5.parse(input);
   } catch (err) {
@@ -18,11 +18,11 @@ const parseInput = input => {
  * @param {string|string[]} packages - List of packages to install.
  * @returns {object} - Response from `child_process.spawnSync()`.
  */
-const installPackages = packages => {
+const installPackages = (packages) => {
   try {
     const packagesArr = arrify(packages);
     core.debug(`Installing additional packages: ${packagesArr}`);
-    const spawn = spawnSync('npm', ['install', '--no-save', ...packagesArr], {
+    const spawn = childProcess.spawnSync('npm', ['install', '--no-save', ...packagesArr], {
       stdio: ['inherit', 'inherit', 'pipe'],
     });
     if (spawn.status !== 0) {
@@ -86,7 +86,7 @@ async function run() {
 
   // remove falsey options
   Object.keys(options).forEach(
-    key => (options[key] === undefined || options[key] === '') && delete options[key],
+    (key) => (options[key] === undefined || options[key] === '') && delete options[key],
   );
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
