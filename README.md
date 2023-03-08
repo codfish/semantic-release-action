@@ -66,8 +66,12 @@ to find the digest. If you prefer pulling from
 
 ### Basic Usage
 
-> **Note**: Until [this semantic-release pr](https://github.com/semantic-release/semantic-release/pull/1737) gets merged, `main` is not a supported branch by default. If your repository is using `main` as the default branch which is extremely common, you need to pass the branches input into the action, or define it in your semantic-release config explicitly.
-> See: https://github.com/semantic-release/semantic-release/pull/1737
+> **Note**: Until
+> [this semantic-release pr](https://github.com/semantic-release/semantic-release/pull/1737) gets
+> merged, `main` is not a supported branch by default. If your repository is using `main` as the
+> default branch which is extremely common, you need to pass the branches input into the action, or
+> define it in your semantic-release config explicitly. See:
+> https://github.com/semantic-release/semantic-release/pull/1737
 
 ```yml
 steps:
@@ -202,32 +206,38 @@ I can easily leverage it across any project.
 
 You can pass in `semantic-release` configuration options via GitHub Action inputs using `with`.
 
-It's important to note, **NONE** of these inputs are required. Semantic release has a default configuration that it will use if you don't provide any.
+It's important to note, **NONE** of these inputs are required. Semantic release has a default
+configuration that it will use if you don't provide any.
 
-Also of note, if you'd like to override the default configuration and you'd rather not use the inputs here, the action will automatically use any
+Also of note, if you'd like to override the default configuration and you'd rather not use the
+inputs here, the action will automatically use any
 [`semantic-release` configuration](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
 defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)
 
 > **Note**: Each input **will take precedence** over options configured in the configuration file
 > and shareable configurations.
 
-| Input Variable     | Type | Description                                                                                                                                               |
-| --------------     | ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| branches           | `Array`, `String`, `Object`     | The branches on which releases should happen.                                                                                                             |
-| plugins            | `Array` | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                  |
-| extends            | `Array`, `String`  | List of modules or file paths containing a shareable configuration.                                                                                       |
-| additional_packages |  `Array`, `String`  | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. |
-| dry_run            | `Boolean`   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail. |
-| repository_url     | `String`  | The git repository URL                                                                                                                                    |
-| tag_format         |  `String`    | The Git tag format used by semantic-release to identify releases.                                                                                         |
+| Input Variable      | Type                        | Description                                                                                                                                                                                                                                                     |
+| ------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| branches            | `Array`, `String`, `Object` | The branches on which releases should happen.                                                                                                                                                                                                                   |
+| plugins             | `Array`                     | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                                                                                                                        |
+| extends             | `Array`, `String`           | List of modules or file paths containing a shareable configuration.                                                                                                                                                                                             |
+| additional_packages | `Array`, `String`           | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. |
+| dry_run             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       |
+| repository_url      | `String`                    | The git repository URL                                                                                                                                                                                                                                          |
+| tag_format          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               |
 
-> **Note**: Any package specified in `extends` or `additional_packages` will be installed automatically for you as a convenience, allowing you to use this action without adding new dependencies to your application or install deps in a separate action step.
+> **Note**: Any package specified in `extends` or `additional_packages` will be installed
+> automatically for you as a convenience, allowing you to use this action without adding new
+> dependencies to your application or install deps in a separate action step.
 
-> **Note**: `additional_packages` won't get used automatically, setting this variable will just install them so you can use them. You'll need to actually list them in your `plugins` and/or `extends` configuration for **semantic-release** to use them.
+> **Note**: `additional_packages` won't get used automatically, setting this variable will just
+> install them so you can use them. You'll need to actually list them in your `plugins` and/or
+> `extends` configuration for **semantic-release** to use them.
 
-> **Note**: The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use `branches`
-instead. Previously used in semantic-release v15 to set a single branch on which releases should
-happen.
+> **Note**: The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use
+> `branches` instead. Previously used in semantic-release v15 to set a single branch on which
+> releases should happen.
 
 - **GitHub Actions Inputs:**
   https://help.github.com/en/articles/metadata-syntax-for-github-actions#inputs
@@ -285,7 +295,7 @@ might be so this is a way to cover more cases.
 | release-major         | The new releases' major version number, i.e. `1`                                                                                                  |
 | release-minor         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | release-patch         | The new releases' patch version number, i.e. `3`                                                                                                  |
-| release-notes         | The release notes of the next release.                                                                                                  |
+| release-notes         | The release notes of the next release.                                                                                                            |
 
 **Environment Variables**:
 
@@ -296,7 +306,7 @@ might be so this is a way to cover more cases.
 | RELEASE_MAJOR         | The new releases' major version number, i.e. `1`                                                                                                  |
 | RELEASE_MINOR         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | RELEASE_PATCH         | The new releases' patch version number, i.e. `3`                                                                                                  |
-| RELEASE_NOTES         | The release notes of the next release in markdown.                                                                                                 |
+| RELEASE_NOTES         | The release notes of the next release in markdown.                                                                                                |
 
 ## Maintenance
 
