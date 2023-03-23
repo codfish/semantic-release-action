@@ -53,7 +53,7 @@ async function run() {
   dryRun = dryRun !== '' ? dryRun === 'true' : '';
   const repositoryUrl = core.getInput('repository_url', { required: false });
   const tagFormat = core.getInput('tag_format', { required: false });
-  const commitPaths = core.getInput('commit_paths', { required: false });
+  const commitPaths = parseInput(core.getInput('commit_paths', { required: false }));
 
   core.debug(`branch input: ${branch}`);
   core.debug(`branches input: ${branches}`);
