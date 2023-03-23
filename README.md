@@ -226,6 +226,7 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 | dry_run             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       |
 | repository_url      | `String`                    | The git repository URL                                                                                                                                                                                                                                          |
 | tag_format          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               |
+| commit_pats         | `Array`                     | Allows the commits returned to be filtered by the array of paths defined in commitPaths.                                                                                                                                                                        |
 
 > **Note**: Any package specified in `extends` or `additional_packages` will be installed
 > automatically for you as a convenience, allowing you to use this action without adding new
@@ -273,6 +274,8 @@ steps:
         ['@semantic-release/apm@4.0.0', '@semantic-release/git']
       plugins: |
         ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/apm', '@semantic-release/git']
+      commit_pats: |
+        ['app1/**']
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
