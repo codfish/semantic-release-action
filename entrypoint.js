@@ -53,6 +53,7 @@ async function run() {
   dryRun = dryRun !== '' ? dryRun === 'true' : '';
   const repositoryUrl = core.getInput('repository_url', { required: false });
   const tagFormat = core.getInput('tag_format', { required: false });
+  const commitPaths = core.getInput('commit_paths', { required: false });
 
   core.debug(`branch input: ${branch}`);
   core.debug(`branches input: ${branches}`);
@@ -62,6 +63,7 @@ async function run() {
   core.debug(`dry_run input: ${dryRun}`);
   core.debug(`repository_url input: ${repositoryUrl}`);
   core.debug(`tag_format input: ${tagFormat}`);
+  core.debug(`commit_paths input: ${commitPaths}`);
 
   // install additional plugins/configurations
   if (extendsInput) {
@@ -80,6 +82,7 @@ async function run() {
     dryRun,
     repositoryUrl,
     tagFormat,
+    commitPaths,
   };
 
   core.debug(`options before cleanup: ${JSON.stringify(options)}`);
