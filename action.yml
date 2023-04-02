@@ -56,15 +56,27 @@ inputs:
 outputs:
   new-release-published:
     description:
-      "Either `'true'` when a new release was published or `'false'` when no release was published"
+      "Either `'true'` when a new release was published or `'false'` when no release was published."
   release-version:
-    description: "The new releases' semantic version, i.e. `1.8.3`"
+    description: "The new releases' semantic version, i.e. `1.8.3`."
   release-major:
-    description: "The new releases' major version number, i.e. `1`"
+    description: "The new releases' major version number, i.e. `1`."
   release-minor:
-    description: "The new releases' minor version number, i.e. `8`"
+    description: "The new releases' minor version number, i.e. `8`."
   release-patch:
-    description: "The new releases' patch version number, i.e. `3`"
+    description: "The new releases' patch version number, i.e. `3`."
+  release-notes:
+    description: "The release notes of the next release."
+  type:
+    description: "The semver export type of the release, e.g. `major`, `prerelease`, etc."
+  channel:
+    description: "The release channel of the release."
+  git-head:
+    description: "The git hash of the release."
+  git-tag:
+    description: "The version with v prefix."
+  name:
+    description: "The release name."
 runs:
   using: 'docker'
   image: 'Dockerfile'

@@ -286,7 +286,7 @@ might be so this is a way to cover more cases.
 
 **Docs:** https://help.github.com/en/articles/metadata-syntax-for-github-actions#outputs
 
-**Output Variables**:
+#### Output Variables
 
 | Output Variable       | Description                                                                                                                                       |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -296,8 +296,13 @@ might be so this is a way to cover more cases.
 | release-minor         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | release-patch         | The new releases' patch version number, i.e. `3`                                                                                                  |
 | release-notes         | The release notes of the next release.                                                                                                            |
+| type | The semver export type of the release, e.g. `major`, `prerelease`, etc. |
+| channel | The release channel of the release. |
+| git-head | The git hash of the release. |
+| git-tag | The version with v prefix. |
+| name | The release name. |
 
-**Environment Variables**:
+#### Environment Variables
 
 | Environment Variable  | Description                                                                                                                                       |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -307,6 +312,11 @@ might be so this is a way to cover more cases.
 | RELEASE_MINOR         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | RELEASE_PATCH         | The new releases' patch version number, i.e. `3`                                                                                                  |
 | RELEASE_NOTES         | The release notes of the next release in markdown.                                                                                                |
+| RELEASE_TYPE | The semver export type of the release, e.g. `major`, `prerelease`, etc. |
+| RELEASE_CHANNEL | The release channel of the release. |
+| RELEASE_GIT_HEAD | The git hash of the release. |
+| RELEASE_GIT_TAG | The version with v prefix. |
+| RELEASE_NAME | The release name. |
 
 ## Maintenance
 
