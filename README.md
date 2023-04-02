@@ -26,6 +26,8 @@ Referencing the major version is
 
 ```yml
 steps:
+  # Reference a docker image from GitHub Container Registry (recommended for speed & security)
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4675eae74abbabc869298ca798833fef291ce30fb9edfac76787746e7d9d3904
   # Reference the major version of a release
   - uses: codfish/semantic-release-action@v2
   # Reference a specific commit
@@ -56,12 +58,12 @@ instead of using an image tag, which is a mutable reference.
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry (example for v2.0.0)
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:601fd6c1db9efbcfabd34ba4563e7d0b9eb0f8ba11316e3e7d6a9b6883dac8ba
+  - uses: docker://ghcr.io/codfish/semantic-release-action@<digest>
 ```
 
-Inspect the
-[image version you want here](https://github.com/users/codfish/packages/container/package/semantic-release-action)
-to find the digest. If you prefer pulling from
+Where `<digest>` is any
+[docker image digest you want here](https://github.com/users/codfish/packages/container/package/semantic-release-action).
+If you prefer pulling from
 [Docker Hub, check here](https://hub.docker.com/repository/docker/codfish/semantic-release-action/tags).
 
 ### Basic Usage
@@ -296,11 +298,11 @@ might be so this is a way to cover more cases.
 | release-minor         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | release-patch         | The new releases' patch version number, i.e. `3`                                                                                                  |
 | release-notes         | The release notes of the next release.                                                                                                            |
-| type | The semver export type of the release, e.g. `major`, `prerelease`, etc. |
-| channel | The release channel of the release. |
-| git-head | The git hash of the release. |
-| git-tag | The version with v prefix. |
-| name | The release name. |
+| type                  | The semver export type of the release, e.g. `major`, `prerelease`, etc.                                                                           |
+| channel               | The release channel of the release.                                                                                                               |
+| git-head              | The git hash of the release.                                                                                                                      |
+| git-tag               | The version with v prefix.                                                                                                                        |
+| name                  | The release name.                                                                                                                                 |
 
 #### Environment Variables
 
@@ -312,11 +314,11 @@ might be so this is a way to cover more cases.
 | RELEASE_MINOR         | The new releases' minor version number, i.e. `8`                                                                                                  |
 | RELEASE_PATCH         | The new releases' patch version number, i.e. `3`                                                                                                  |
 | RELEASE_NOTES         | The release notes of the next release in markdown.                                                                                                |
-| RELEASE_TYPE | The semver export type of the release, e.g. `major`, `prerelease`, etc. |
-| RELEASE_CHANNEL | The release channel of the release. |
-| RELEASE_GIT_HEAD | The git hash of the release. |
-| RELEASE_GIT_TAG | The version with v prefix. |
-| RELEASE_NAME | The release name. |
+| RELEASE_TYPE          | The semver export type of the release, e.g. `major`, `prerelease`, etc.                                                                           |
+| RELEASE_CHANNEL       | The release channel of the release.                                                                                                               |
+| RELEASE_GIT_HEAD      | The git hash of the release.                                                                                                                      |
+| RELEASE_GIT_TAG       | The version with v prefix.                                                                                                                        |
+| RELEASE_NAME          | The release name.                                                                                                                                 |
 
 ## Maintenance
 
