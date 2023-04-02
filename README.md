@@ -63,8 +63,6 @@ steps:
 
 Where `<digest>` is any
 [docker image digest you want here](https://github.com/users/codfish/packages/container/package/semantic-release-action).
-If you prefer pulling from
-[Docker Hub, check here](https://hub.docker.com/repository/docker/codfish/semantic-release-action/tags).
 
 ### Basic Usage
 
