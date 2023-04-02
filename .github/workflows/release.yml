@@ -34,16 +34,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: test output
-        if: steps.semantic.outputs.new-release-published == 'true'
+      - name: Dump semantic outputs
+        if: steps.semantic-dry-run.outputs.new-release-published == 'true'
         run: |
-          echo "$OUTPUTS"
-          echo "$NEW_RELEASE_PUBLISHED"
-          echo "$RELEASE_MAJOR"
-          echo "$RELEASE_MINOR"
-          echo "$RELEASE_PATCH"
+          echo "Outputs:\n"
+          echo "$SEMANTIC_OUTPUTS"
+          echo "\n-----\n\nEnvironment Variables:\n"
+          echo "NEW_RELEASE_PUBLISHED: $NEW_RELEASE_PUBLISHED"
+          echo "RELEASE_VERSION: $RELEASE_VERSION"
+          echo "RELEASE_MAJOR: $RELEASE_MAJOR"
+          echo "RELEASE_MINOR: $RELEASE_MINOR"
+          echo "RELEASE_PATCH: $RELEASE_PATCH"
+          echo "RELEASE_NOTES: $RELEASE_NOTES"
+          echo "RELEASE_TYPE: $RELEASE_TYPE"
+          echo "RELEASE_CHANNEL: $RELEASE_CHANNEL"
+          echo "RELEASE_GIT_HEAD: $RELEASE_GIT_HEAD"
+          echo "RELEASE_GIT_TAG: $RELEASE_GIT_TAG"
+          echo "RELEASE_NAME: $RELEASE_NAME"
         env:
-          OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
+          SEMANTIC_OUTPUTS: ${{ toJson(steps.semantic-dry-run.outputs) }}
 
       - name: docker login
         run: |
