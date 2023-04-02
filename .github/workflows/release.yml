@@ -35,7 +35,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Dump semantic outputs
-        if: steps.semantic-dry-run.outputs.new-release-published == 'true'
+        if: steps.semantic.outputs.new-release-published == 'true'
         run: |
           echo "Outputs:\n"
           echo "$SEMANTIC_OUTPUTS"
