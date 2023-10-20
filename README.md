@@ -217,21 +217,21 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 > **Note**: Each input **will take precedence** over options configured in the configuration file
 > and shareable configurations.
 
-| Input Variable      | Type                        | Description                                                                                                                                                                                                                                                     |
-| ------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| branches            | `Array`, `String`, `Object` | The branches on which releases should happen.                                                                                                                                                                                                                   |
-| plugins             | `Array`                     | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                                                                                                                        |
-| extends             | `Array`, `String`           | List of modules or file paths containing a shareable configuration.                                                                                                                                                                                             |
-| additional_packages | `Array`, `String`           | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. |
-| dry_run             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       |
-| repository_url      | `String`                    | The git repository URL                                                                                                                                                                                                                                          |
-| tag_format          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               |
+| Input Variable        | Type                        | Description                                                                                                                                                                                                                                                     | Default                                                                                                                                       |
+| --------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `branches`            | `Array`, `String`, `Object` | The branches on which releases should happen. Our default mimic's semantic-release's, with one major inclusion: the `main` branch.                                                                                                                              | `['+([0-9])?(.{+([0-9]),x}).x', 'master', 'main', 'next', 'next-major', {name: 'beta', prerelease: true}, {name: 'alpha', prerelease: true}]` |
+| `plugins`             | `Array`                     | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                                                                                                                        | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#plugins)                      |
+| `extends`             | `Array`, `String`           | List of modules or file paths containing a shareable configuration.                                                                                                                                                                                             | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends)                      |
+| `additional-packages` | `Array`, `String`           | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. | `[]`                                                                                                                                          |
+| `dry-run`             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#dryrun)                       |
+| `repository-url`      | `String`                    | The git repository URL                                                                                                                                                                                                                                          | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#repositoryurl)                |
+| `tag-format`          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat)                    |
 
-> **Note**: Any package specified in `extends` or `additional_packages` will be installed
+> **Note**: Any package specified in `extends` or `additional-packages` will be installed
 > automatically for you as a convenience, allowing you to use this action without adding new
 > dependencies to your application or install deps in a separate action step.
 
-> **Note**: `additional_packages` won't get used automatically, setting this variable will just
+> **Note**: `additional-packages` won't get used automatically, setting this variable will just
 > install them so you can use them. You'll need to actually list them in your `plugins` and/or
 > `extends` configuration for **semantic-release** to use them.
 
@@ -250,7 +250,7 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 steps:
   - run: codfish/semantic-release-action@v2
     with:
-      dry_run: true
+      dry-run: true
       branches: |
         [
           '+([0-9])?(.{+([0-9]),x}).x',
@@ -266,10 +266,10 @@ steps:
             prerelease: true
           }
         ]
-      repository_url: https://github.com/codfish/semantic-release-action.git
-      tag_format: 'v${version}'
+      repository-url: https://github.com/codfish/semantic-release-action.git
+      tag-format: 'v${version}'
       extends: '@semantic-release/apm-config'
-      additional_packages: |
+      additional-packages: |
         ['@semantic-release/apm@4.0.0', '@semantic-release/git']
       plugins: |
         ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/apm', '@semantic-release/git']

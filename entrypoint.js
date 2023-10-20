@@ -51,21 +51,21 @@ async function run() {
   const branches = parseInput(core.getInput('branches', { required: false }));
   const plugins = parseInput(core.getInput('plugins', { required: false }));
   const additionalPackages =
-    parseInput(core.getInput('additional_packages', { required: false })) || [];
+    parseInput(core.getInput('additional-packages', { required: false })) || [];
   const extendsInput = parseInput(core.getInput('extends', { required: false }));
-  let dryRun = core.getInput('dry_run', { required: false });
+  let dryRun = core.getInput('dry-run', { required: false });
   dryRun = dryRun !== '' ? dryRun === 'true' : '';
-  const repositoryUrl = core.getInput('repository_url', { required: false });
-  const tagFormat = core.getInput('tag_format', { required: false });
+  const repositoryUrl = core.getInput('repository-url', { required: false });
+  const tagFormat = core.getInput('tag-format', { required: false });
 
   core.debug(`branch input: ${branch}`);
   core.debug(`branches input: ${branches}`);
   core.debug(`plugins input: ${plugins}`);
-  core.debug(`additional_packages input: ${additionalPackages}`);
+  core.debug(`additional-packages input: ${additionalPackages}`);
   core.debug(`extends input: ${extendsInput}`);
-  core.debug(`dry_run input: ${dryRun}`);
-  core.debug(`repository_url input: ${repositoryUrl}`);
-  core.debug(`tag_format input: ${tagFormat}`);
+  core.debug(`dry-run input: ${dryRun}`);
+  core.debug(`repository-url input: ${repositoryUrl}`);
+  core.debug(`tag-format input: ${tagFormat}`);
 
   // install additional plugins/configurations
   if (extendsInput) {
