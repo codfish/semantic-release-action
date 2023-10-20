@@ -29,11 +29,11 @@ steps:
   # Reference a docker image from GitHub Container Registry (recommended for speed & security)
   - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:9d1428bb40cb801b9c64e5cb7d105f4d4b94e5f47c61fa388cddee6bb8378b83
   # Reference the major version of a release
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
   # Reference a specific commit
-  - uses: codfish/semantic-release-action@4e0079a1e7511dab622628e1bf298e572a9f3d22
+  - uses: codfish/semantic-release-action@3607258ae5976084750909dbda50a850cb76ec3a
   # Reference a minor version of a release
-  - uses: codfish/semantic-release-action@v1.10
+  - uses: codfish/semantic-release-action@v3.2.1
   # Reference a branch
   - uses: codfish/semantic-release-action@main
 ```
@@ -46,9 +46,9 @@ steps:
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action:v2
+  - uses: docker://ghcr.io/codfish/semantic-release-action:v3
   # Reference a docker image from Dockerhub
-  - uses: docker://codfish/semantic-release-action:v2
+  - uses: docker://codfish/semantic-release-action:v3
 ```
 
 **If you're security conscious**, you can
@@ -57,7 +57,7 @@ instead of using an image tag, which is a mutable reference.
 
 ```yml
 steps:
-  # Reference a docker image from GitHub Container Registry (example for v2.0.0)
+  # Reference a docker image from GitHub Container Registry
   - uses: docker://ghcr.io/codfish/semantic-release-action@<digest>
 ```
 
@@ -77,7 +77,7 @@ Where `<digest>` is any
 steps:
   - uses: actions/checkout@v3
 
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
     with:
       # specify default branches to add support for the `main` branch
       # which semantic-release doesn't have as a default yet.
@@ -108,7 +108,7 @@ steps:
   - uses: actions/checkout@v3
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -132,7 +132,7 @@ steps:
   - uses: actions/checkout@v3
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -153,7 +153,7 @@ steps:
 steps:
   - uses: actions/checkout@v3
 
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -248,7 +248,7 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 
 ```yml
 steps:
-  - run: codfish/semantic-release-action@v2
+  - run: codfish/semantic-release-action@v3
     with:
       dry-run: true
       branches: |
@@ -321,12 +321,12 @@ might be so this is a way to cover more cases.
 ## Maintenance
 
 > Make the new release available to those binding to the major version tag: Move the major version
-> tag (v1, v2, etc.) to point to the ref of the current release. This will act as the stable release
+> tag (v2, v3, etc.) to point to the ref of the current release. This will act as the stable release
 > for that major version. You should keep this tag updated to the most recent stable minor/patch
 > release.
 
 ```sh
-git tag -fa v2 -m "Update v2 tag" && git push origin v2 --force
+git tag -fa v3 -m "Update v3 tag" && git push origin v3 --force
 ```
 
 **Reference**:
