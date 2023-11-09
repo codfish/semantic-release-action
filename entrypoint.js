@@ -1,5 +1,6 @@
 import * as childProcess from 'child_process';
 import core from '@actions/core';
+import { execa } from 'execa';
 import semanticRelease from 'semantic-release';
 import JSON5 from 'json5';
 import arrify from 'arrify';
@@ -91,7 +92,13 @@ async function run() {
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 
-  core.debug(childProcess.spawnSync('git', ['rev-parse', '--git-dir']));
+  const ls = await execa('ls -al');
+  core.debug(ls);
+  const gitreponse = await execa('git', ['rev-parse', '--git-dir']);
+  core.debug(gitreponse);
+  const cewd = await execa('cwd');
+  core.debug(cewd);
+
   core.debug(childProcess.spawnSync('cwd'));
 
   const result = await semanticRelease(options);
