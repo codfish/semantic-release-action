@@ -27,7 +27,7 @@ Referencing the major version is
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry (recommended for speed & security)
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4675eae74abbabc869298ca798833fef291ce30fb9edfac76787746e7d9d3904
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:9d1428bb40cb801b9c64e5cb7d105f4d4b94e5f47c61fa388cddee6bb8378b83
   # Reference the major version of a release
   - uses: codfish/semantic-release-action@v2
   # Reference a specific commit
