@@ -1,8 +1,11 @@
 # semantic-release-action
 
-> GitHub Action for running `semantic-release`. Respects any semantic-release configuration file in
-> your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
-> for you to use in subsequent actions containing version numbers.
+GitHub Action for running `semantic-release`. Respects any semantic-release configuration file in
+your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
+for you to use in subsequent actions containing version numbers.
+
+> **Note**: `v3` of this action uses semantic-release v22 & node v20.9. `v2` uses semantic-release
+> v20 & node v18.7.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -19,6 +22,9 @@
 
 ## Usage
 
+> Check the release notes for help
+> [migrating to v3](https://github.com/codfish/semantic-release-action/releases/tag/v3.0.0).
+
 See [action.yml](action.yml).
 
 Referencing the major version is
@@ -27,13 +33,13 @@ Referencing the major version is
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry (recommended for speed & security)
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:9d1428bb40cb801b9c64e5cb7d105f4d4b94e5f47c61fa388cddee6bb8378b83
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:e8640e0a620980247fd6e46f2f43f9a42d17181840518ea7fe983eeed65c154e
   # Reference the major version of a release
   - uses: codfish/semantic-release-action@v3
   # Reference a specific commit
-  - uses: codfish/semantic-release-action@3607258ae5976084750909dbda50a850cb76ec3a
+  - uses: codfish/semantic-release-action@ee5b4afec556c3bf8b9f0b9cd542aade9e486033
   # Reference a minor version of a release
-  - uses: codfish/semantic-release-action@v3.2.1
+  - uses: codfish/semantic-release-action@v3.0.1
   # Reference a branch
   - uses: codfish/semantic-release-action@main
 ```
@@ -58,7 +64,7 @@ instead of using an image tag, which is a mutable reference.
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action@<digest>
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:e8640e0a620980247fd6e46f2f43f9a42d17181840518ea7fe983eeed65c154e
 ```
 
 Where `<digest>` is any
@@ -66,36 +72,11 @@ Where `<digest>` is any
 
 ### Basic Usage
 
-> **Note**: Until
-> [this semantic-release pr](https://github.com/semantic-release/semantic-release/pull/1737) gets
-> merged, `main` is not a supported branch by default. If your repository is using `main` as the
-> default branch which is extremely common, you need to pass the branches input into the action, or
-> define it in your semantic-release config explicitly. See:
-> https://github.com/semantic-release/semantic-release/pull/1737
-
 ```yml
 steps:
   - uses: actions/checkout@v3
 
   - uses: codfish/semantic-release-action@v3
-    with:
-      # specify default branches to add support for the `main` branch
-      # which semantic-release doesn't have as a default yet.
-      branches: |
-        [
-          '+([0-9])?(.{+([0-9]),x}).x',
-          'main',
-          'next',
-          'next-major',
-          {
-            name: 'beta',
-            prerelease: true
-          },
-          {
-            name: 'alpha',
-            prerelease: true
-          }
-        ]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
