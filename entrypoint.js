@@ -93,14 +93,14 @@ async function run() {
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
   // git config --global --add safe.directory /github/workspace
   try {
-    const cewd = await execa('cwd');
-    core.debug(cewd);
+    const { stdout } = await execa('cwd');
+    core.debug(stdout);
   } catch (error) {
     core.debug(error);
   }
   try {
-    const ls = await execa('ls', ['-al']);
-    core.debug(ls);
+    const { stdout } = await execa('ls', ['-al']);
+    core.debug(stdout);
   } catch (error) {
     core.debug(error);
   }
