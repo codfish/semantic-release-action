@@ -91,6 +91,13 @@ async function run() {
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 
+  childProcess.spawnSync('git', ['rev-parse', '--git-dir'], {
+    stdio: ['inherit', 'inherit', 'pipe'],
+  });
+  childProcess.spawnSync('cwd', {
+    stdio: ['inherit', 'inherit', 'pipe'],
+  });
+
   const result = await semanticRelease(options);
   if (!result) {
     core.debug('No release published');
