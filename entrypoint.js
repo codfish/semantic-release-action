@@ -22,9 +22,13 @@ const installPackages = (packages) => {
   try {
     const packagesArr = arrify(packages);
     core.debug(`Installing additional packages: ${packagesArr}`);
-    const spawn = childProcess.spawnSync('npm', ['install', '--no-save', ...packagesArr], {
-      stdio: ['inherit', 'inherit', 'pipe'],
-    });
+    const spawn = childProcess.spawnSync(
+      'npm',
+      ['install', '--no-save', '--no-audit', '--no-fund', '--force', ...packagesArr],
+      {
+        stdio: ['inherit', 'inherit', 'pipe'],
+      },
+    );
     if (spawn.status !== 0) {
       throw new Error(spawn.stderr);
     }
