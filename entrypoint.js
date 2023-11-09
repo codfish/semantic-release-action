@@ -1,6 +1,5 @@
 import * as childProcess from 'child_process';
 import core from '@actions/core';
-import { execa } from 'execa';
 import semanticRelease from 'semantic-release';
 import JSON5 from 'json5';
 import arrify from 'arrify';
@@ -42,6 +41,29 @@ const installPackages = (packages) => {
 };
 
 /**
+ * Sets the github workspace as a safe directory in the global git config.
+ *
+ * @returns {object} - Response from `child_process.spawnSync()`.
+ */
+const setGitConfigSafeDirectory = () => {
+  try {
+    core.debug(`Enabling github workspace as a git safe directory`);
+    const spawn = childProcess.spawnSync(
+      'git',
+      ['config', '--global', '--add', 'safe.directory', process.env.GITHUB_WORKSPACE],
+    );
+    if (spawn.status !== 0) {
+      throw new Error(spawn.stderr);
+    }
+    core.debug(`Set ${process.env.GITHUB_WORKSPACE} as a safe directory.`);
+    return spawn;
+  } catch (err) {
+    core.debug(`Error setting ${process.env.GITHUB_WORKSPACE} as a safe directory.`);
+    throw err;
+  }
+};
+
+/**
  * Run semantic-release.
  *
  * @see https://github.com/semantic-release/semantic-release/blob/master/docs/developer-guide/js-api.md
@@ -68,13 +90,7 @@ async function run() {
   core.debug(`repository-url input: ${repositoryUrl}`);
   core.debug(`tag-format input: ${tagFormat}`);
 
-  try {
-    // Running the git config command to add the safe directory
-    await execa('git', ['config', '--global', '--add', 'safe.directory', '/github/workspace']);
-    core.debug(error)
-  } catch (error) {
-    core.debug(error)
-  }
+  setGitConfigSafeDirectory()
 
   // install additional plugins/configurations
   if (extendsInput) {
