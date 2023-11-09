@@ -1,5 +1,8 @@
 FROM node:18.17.1
 
+RUN apt-get update
+RUN apt-get install -y git
+
 # nice clean home for our action files
 RUN mkdir /action
 WORKDIR /action
