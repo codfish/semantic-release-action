@@ -1,6 +1,5 @@
 import * as childProcess from 'child_process';
 import core from '@actions/core';
-import { execa } from 'execa';
 import semanticRelease from 'semantic-release';
 import JSON5 from 'json5';
 import arrify from 'arrify';
@@ -89,42 +88,6 @@ async function run() {
   Object.keys(options).forEach(
     (key) => (options[key] === undefined || options[key] === '') && delete options[key],
   );
-
-  core.debug(`options after cleanup: ${JSON.stringify(options)}`);
-  // git config --global --add safe.directory /github/workspace
-  try {
-    const { stdout } = await execa('cwd');
-    core.debug(stdout);
-  } catch (error) {
-    core.debug(error);
-  }
-  try {
-    const { stdout } = await execa('ls', ['-al']);
-    core.debug(stdout);
-  } catch (error) {
-    core.debug(error);
-  }
-  try {
-    const gitreponse = await execa('git', ['rev-parse', '--git-dir']);
-    core.debug(gitreponse);
-  } catch (error) {
-    core.debug(error);
-  }
-  try {
-    const gitreponse = await execa(
-      'git',
-      ['config'],
-      ['--global'],
-      ['--add'],
-      ['safe.directory'],
-      ['/github/workspace'],
-    );
-    core.debug(gitreponse);
-  } catch (error) {
-    core.debug(error);
-  }
-
-  core.debug(childProcess.spawnSync('cwd'));
 
   const result = await semanticRelease(options);
   if (!result) {
