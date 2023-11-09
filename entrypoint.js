@@ -92,12 +92,12 @@ async function run() {
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 
-  const ls = await execa('ls -al');
+  const cewd = await execa('cwd');
+  core.debug(cewd);
+  const ls = await execa('ls', ['-al']);
   core.debug(ls);
   const gitreponse = await execa('git', ['rev-parse', '--git-dir']);
   core.debug(gitreponse);
-  const cewd = await execa('cwd');
-  core.debug(cewd);
 
   core.debug(childProcess.spawnSync('cwd'));
 
