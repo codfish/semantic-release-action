@@ -1,9 +1,7 @@
-FROM node:18.7.0
+FROM node:18.17.1
 
-# RUN mkdir -p /github/workspace
-# RUN git config --global --add safe.directory /github/workspace
-
-RUN git --version
+RUN apt-get update
+RUN apt-get install -y git=2.30.2
 
 # nice clean home for our action files
 RUN mkdir /action
