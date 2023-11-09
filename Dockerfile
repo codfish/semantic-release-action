@@ -1,4 +1,4 @@
-FROM node:18.17
+FROM node:18.7.0
 
 # nice clean home for our action files
 RUN mkdir /action
