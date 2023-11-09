@@ -1,5 +1,6 @@
 import * as childProcess from 'child_process';
 import core from '@actions/core';
+import { execa } from 'execa';
 import semanticRelease from 'semantic-release';
 import JSON5 from 'json5';
 import arrify from 'arrify';
