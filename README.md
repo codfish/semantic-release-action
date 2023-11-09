@@ -29,11 +29,11 @@ steps:
   # Reference a docker image from GitHub Container Registry (recommended for speed & security)
   - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:9d1428bb40cb801b9c64e5cb7d105f4d4b94e5f47c61fa388cddee6bb8378b83
   # Reference the major version of a release
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
   # Reference a specific commit
-  - uses: codfish/semantic-release-action@4e0079a1e7511dab622628e1bf298e572a9f3d22
+  - uses: codfish/semantic-release-action@3607258ae5976084750909dbda50a850cb76ec3a
   # Reference a minor version of a release
-  - uses: codfish/semantic-release-action@v1.10
+  - uses: codfish/semantic-release-action@v3.2.1
   # Reference a branch
   - uses: codfish/semantic-release-action@main
 ```
@@ -46,9 +46,9 @@ steps:
 ```yml
 steps:
   # Reference a docker image from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action:v2
+  - uses: docker://ghcr.io/codfish/semantic-release-action:v3
   # Reference a docker image from Dockerhub
-  - uses: docker://codfish/semantic-release-action:v2
+  - uses: docker://codfish/semantic-release-action:v3
 ```
 
 **If you're security conscious**, you can
@@ -57,7 +57,7 @@ instead of using an image tag, which is a mutable reference.
 
 ```yml
 steps:
-  # Reference a docker image from GitHub Container Registry (example for v2.0.0)
+  # Reference a docker image from GitHub Container Registry
   - uses: docker://ghcr.io/codfish/semantic-release-action@<digest>
 ```
 
@@ -77,7 +77,7 @@ Where `<digest>` is any
 steps:
   - uses: actions/checkout@v3
 
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
     with:
       # specify default branches to add support for the `main` branch
       # which semantic-release doesn't have as a default yet.
@@ -108,7 +108,7 @@ steps:
   - uses: actions/checkout@v3
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -132,7 +132,7 @@ steps:
   - uses: actions/checkout@v3
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -153,7 +153,7 @@ steps:
 steps:
   - uses: actions/checkout@v3
 
-  - uses: codfish/semantic-release-action@v2
+  - uses: codfish/semantic-release-action@v3
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -217,21 +217,21 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 > **Note**: Each input **will take precedence** over options configured in the configuration file
 > and shareable configurations.
 
-| Input Variable      | Type                        | Description                                                                                                                                                                                                                                                     |
-| ------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| branches            | `Array`, `String`, `Object` | The branches on which releases should happen.                                                                                                                                                                                                                   |
-| plugins             | `Array`                     | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                                                                                                                        |
-| extends             | `Array`, `String`           | List of modules or file paths containing a shareable configuration.                                                                                                                                                                                             |
-| additional_packages | `Array`, `String`           | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. |
-| dry_run             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       |
-| repository_url      | `String`                    | The git repository URL                                                                                                                                                                                                                                          |
-| tag_format          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               |
+| Input Variable        | Type                        | Description                                                                                                                                                                                                                                                     | Default                                                                                                                                       |
+| --------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `branches`            | `Array`, `String`, `Object` | The branches on which releases should happen. Our default mimic's semantic-release's, with one major inclusion: the `main` branch.                                                                                                                              | `['+([0-9])?(.{+([0-9]),x}).x', 'master', 'main', 'next', 'next-major', {name: 'beta', prerelease: true}, {name: 'alpha', prerelease: true}]` |
+| `plugins`             | `Array`                     | Define the list of plugins to use. Plugins will run in series, in the order defined, for each steps if they implement it                                                                                                                                        | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#plugins)                      |
+| `extends`             | `Array`, `String`           | List of modules or file paths containing a shareable configuration.                                                                                                                                                                                             | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends)                      |
+| `additional-packages` | `Array`, `String`           | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. | `[]`                                                                                                                                          |
+| `dry-run`             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#dryrun)                       |
+| `repository-url`      | `String`                    | The git repository URL                                                                                                                                                                                                                                          | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#repositoryurl)                |
+| `tag-format`          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat)                    |
 
-> **Note**: Any package specified in `extends` or `additional_packages` will be installed
+> **Note**: Any package specified in `extends` or `additional-packages` will be installed
 > automatically for you as a convenience, allowing you to use this action without adding new
 > dependencies to your application or install deps in a separate action step.
 
-> **Note**: `additional_packages` won't get used automatically, setting this variable will just
+> **Note**: `additional-packages` won't get used automatically, setting this variable will just
 > install them so you can use them. You'll need to actually list them in your `plugins` and/or
 > `extends` configuration for **semantic-release** to use them.
 
@@ -248,9 +248,9 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 
 ```yml
 steps:
-  - run: codfish/semantic-release-action@v2
+  - run: codfish/semantic-release-action@v3
     with:
-      dry_run: true
+      dry-run: true
       branches: |
         [
           '+([0-9])?(.{+([0-9]),x}).x',
@@ -266,10 +266,10 @@ steps:
             prerelease: true
           }
         ]
-      repository_url: https://github.com/codfish/semantic-release-action.git
-      tag_format: 'v${version}'
+      repository-url: https://github.com/codfish/semantic-release-action.git
+      tag-format: 'v${version}'
       extends: '@semantic-release/apm-config'
-      additional_packages: |
+      additional-packages: |
         ['@semantic-release/apm@4.0.0', '@semantic-release/git']
       plugins: |
         ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/apm', '@semantic-release/git']
@@ -321,12 +321,12 @@ might be so this is a way to cover more cases.
 ## Maintenance
 
 > Make the new release available to those binding to the major version tag: Move the major version
-> tag (v1, v2, etc.) to point to the ref of the current release. This will act as the stable release
+> tag (v2, v3, etc.) to point to the ref of the current release. This will act as the stable release
 > for that major version. You should keep this tag updated to the most recent stable minor/patch
 > release.
 
 ```sh
-git tag -fa v2 -m "Update v2 tag" && git push origin v2 --force
+git tag -fa v3 -m "Update v3 tag" && git push origin v3 --force
 ```
 
 **Reference**:

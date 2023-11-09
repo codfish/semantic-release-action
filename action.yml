@@ -12,6 +12,17 @@ inputs:
       'The branches on which releases should happen.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branches'
     required: false
+    default: |
+      [
+        'master',
+        'main',
+        'next',
+        'next-major',
+        '+([0-9])?(.{+([0-9]),x}).x',
+        { name: 'beta', prerelease: true },
+        { name: 'alpha', prerelease: true },
+        { name: 'canary', prerelease: true },
+      ]
   extends:
     description:
       'String or array of modules or file paths containing a shareable configuration.
@@ -23,7 +34,7 @@ inputs:
       steps if they implement it.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#plugins'
     required: false
-  additional_packages:
+  additional-packages:
     description:
       'Define a list of additional plugins or shareable configurations (official or community) to
       install. Use this if you 1) use any plugins other than commit-analyzer,
@@ -31,18 +42,18 @@ inputs:
       semantic-release or 2) want to extend from a shareable configuration.
       https://semantic-release.gitbook.io/semantic-release/extending/plugins-list'
     required: false
-  dry_run:
+  dry-run:
     description:
       'The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode
       skips the following steps: prepare, publish, success and fail.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#dryrun'
     required: false
-  repository_url:
+  repository-url:
     description:
       'The git repository URL.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#repositoryurl'
     required: false
-  tag_format:
+  tag-format:
     description:
       'The Git tag format used by semantic-release to identify releases.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat'
@@ -66,17 +77,17 @@ outputs:
   release-patch:
     description: "The new releases' patch version number, i.e. `3`."
   release-notes:
-    description: "The release notes of the next release."
+    description: 'The release notes of the next release.'
   type:
-    description: "The semver export type of the release, e.g. `major`, `prerelease`, etc."
+    description: 'The semver export type of the release, e.g. `major`, `prerelease`, etc.'
   channel:
-    description: "The release channel of the release."
+    description: 'The release channel of the release.'
   git-head:
-    description: "The git hash of the release."
+    description: 'The git hash of the release.'
   git-tag:
-    description: "The version with v prefix."
+    description: 'The version with v prefix.'
   name:
-    description: "The release name."
+    description: 'The release name.'
 runs:
   using: 'docker'
   image: 'Dockerfile'

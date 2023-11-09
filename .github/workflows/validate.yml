@@ -38,10 +38,10 @@ jobs:
                 prerelease: true
               }
             ]
-          repository_url: https://github.com/codfish/semantic-release-action.git
-          tag_format: 'v${version}'
+          repository-url: https://github.com/codfish/semantic-release-action.git
+          tag-format: 'v${version}'
           extends: '@semantic-release/apm-config'
-          additional_packages: |
+          additional-packages: |
             ['@semantic-release/apm', '@semantic-release/git']
           plugins: |
             ['@semantic-release/commit-analyzer', '@semantic-release/release-notes-generator', '@semantic-release/github', '@semantic-release/apm', '@semantic-release/git']
@@ -52,22 +52,6 @@ jobs:
       - name: semantic-release with no inputs
         id: semantic
         uses: ./
-        with:
-          branches: |
-            [
-              '+([0-9])?(.{+([0-9]),x}).x',
-              'main',
-              'next',
-              'next-major',
-              {
-                name: 'beta',
-                prerelease: true
-              },
-              {
-                name: 'alpha',
-                prerelease: true
-              }
-            ]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
