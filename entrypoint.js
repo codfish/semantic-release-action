@@ -67,6 +67,14 @@ async function run() {
   core.debug(`repository-url input: ${repositoryUrl}`);
   core.debug(`tag-format input: ${tagFormat}`);
 
+  try {
+    // Running the git config command to add the safe directory
+    await execa('git', ['config', '--global', '--add', 'safe.directory', '/github/workspace']);
+    core.debug(error)
+  } catch (error) {
+    core.debug(error)
+  }
+
   // install additional plugins/configurations
   if (extendsInput) {
     additionalPackages.push(...arrify(extendsInput));
