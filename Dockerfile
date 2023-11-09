@@ -1,4 +1,4 @@
-FROM node:18.17.1
+FROM node:18.7.0
 
 # RUN mkdir -p /github/workspace
 # RUN git config --global --add safe.directory /github/workspace
