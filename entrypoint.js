@@ -91,13 +91,25 @@ async function run() {
   );
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
-
-  const cewd = await execa('cwd');
-  core.debug(cewd);
-  const ls = await execa('ls', ['-al']);
-  core.debug(ls);
-  const gitreponse = await execa('git', ['rev-parse', '--git-dir']);
-  core.debug(gitreponse);
+  git config --global --add safe.directory /github/workspace
+  try {
+    const cewd = await execa('cwd');
+    core.debug(cewd);
+  } catch (error) {
+    core.debug(error);
+  }
+  try {
+    const ls = await execa('ls', ['-al']);
+    core.debug(ls);
+  } catch (error) {
+    core.debug(error);
+  }
+  try {
+    const gitreponse = await execa('git', ['rev-parse', '--git-dir']);
+    core.debug(gitreponse);
+  } catch (error) {
+    core.debug(error);
+  }
 
   core.debug(childProcess.spawnSync('cwd'));
 
