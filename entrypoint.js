@@ -91,12 +91,8 @@ async function run() {
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 
-  childProcess.spawnSync('git', ['rev-parse', '--git-dir'], {
-    stdio: ['inherit', 'inherit', 'pipe'],
-  });
-  childProcess.spawnSync('cwd', {
-    stdio: ['inherit', 'inherit', 'pipe'],
-  });
+  core.debug(childProcess.spawnSync('git', ['rev-parse', '--git-dir']));
+  core.debug(childProcess.spawnSync('cwd'));
 
   const result = await semanticRelease(options);
   if (!result) {
