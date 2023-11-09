@@ -110,6 +110,19 @@ async function run() {
   } catch (error) {
     core.debug(error);
   }
+  try {
+    const gitreponse = await execa(
+      'git',
+      ['config'],
+      ['--global'],
+      ['--add'],
+      ['safe.directory'],
+      ['/github/workspace'],
+    );
+    core.debug(gitreponse);
+  } catch (error) {
+    core.debug(error);
+  }
 
   core.debug(childProcess.spawnSync('cwd'));
 
