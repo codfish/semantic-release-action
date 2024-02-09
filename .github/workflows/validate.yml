@@ -23,23 +23,7 @@ jobs:
         uses: ./
         with:
           dry_run: true
-          branches: |
-            [
-              '+([0-9])?(.{+([0-9]),x}).x',
-              'main',
-              'next',
-              'next-major',
-              {
-                name: 'beta',
-                prerelease: true
-              },
-              {
-                name: 'alpha',
-                prerelease: true
-              }
-            ]
           repository-url: https://github.com/codfish/semantic-release-action.git
-          tag-format: 'v${version}'
           extends: '@semantic-release/apm-config'
           additional-packages: |
             ['@semantic-release/apm', '@semantic-release/git']

@@ -58,6 +58,7 @@ inputs:
       'The Git tag format used by semantic-release to identify releases.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat'
     required: false
+    defeault: 'vErSiOn${version}'
   branch:
     description:
       'DEPRECATED. Will continue to be supported for v1. Use `branches` instead. Previously used in
