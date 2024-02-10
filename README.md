@@ -11,66 +11,23 @@ for you to use in subsequent actions containing version numbers.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Usage](#usage)
-  - [Basic Usage](#basic-usage)
+  - [Which Version to Use](#which-version-to-use)
 - [Why](#why)
 - [Configuration](#configuration)
   - [Example with all inputs](#example-with-all-inputs)
   - [Outputs](#outputs)
+- [Recipes](#recipes)
+  - [Including all commit types in a release](#including-all-commit-types-in-a-release)
 - [Maintenance](#maintenance)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Usage
-
+> [!IMPORTANT]
+>
 > Check the release notes for help
 > [migrating to v3](https://github.com/codfish/semantic-release-action/releases/tag/v3.0.0).
 
-See [action.yml](action.yml).
-
-Referencing the major version is
-([recommended by GitHub](https://github.com/actions/toolkit/blob/main/docs/action-versioning.md)).
-
-```yml
-steps:
-  # Reference a docker image from GitHub Container Registry (recommended for speed & security)
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:e8640e0a620980247fd6e46f2f43f9a42d17181840518ea7fe983eeed65c154e
-  # Reference the major version of a release
-  - uses: codfish/semantic-release-action@v3
-  # Reference a specific commit
-  - uses: codfish/semantic-release-action@ee5b4afec556c3bf8b9f0b9cd542aade9e486033
-  # Reference a minor version of a release
-  - uses: codfish/semantic-release-action@v3.0.1
-  # Reference a branch
-  - uses: codfish/semantic-release-action@main
-```
-
-> **Note**: Whenever you use a custom docker-based GitHub Action like this one, you may notice in
-> your run logs, one of the first steps you'll see will be GA building the image for you. You can
-> speed up runs by pulling pre-built docker images instead of making GitHub Actions build them on
-> every run.
-
-```yml
-steps:
-  # Reference a docker image from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action:v3
-  # Reference a docker image from Dockerhub
-  - uses: docker://codfish/semantic-release-action:v3
-```
-
-**If you're security conscious**, you can
-[pin the docker image down to a specific digest](https://francoisbest.com/posts/2020/the-security-of-github-actions#docker-based-actions)
-instead of using an image tag, which is a mutable reference.
-
-```yml
-steps:
-  # Reference a docker image from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:e8640e0a620980247fd6e46f2f43f9a42d17181840518ea7fe983eeed65c154e
-```
-
-Where `<digest>` is any
-[docker image digest you want here](https://github.com/users/codfish/packages/container/package/semantic-release-action).
-
-### Basic Usage
+## Usage
 
 ```yml
 steps:
@@ -149,6 +106,58 @@ steps:
 If you're _not_ publishing to npm and only want to use this action for GitHub releases, the easiest
 approach would simply be to add `"private": true,` to your `package.json`.
 
+### Which Version to Use
+
+See [action.yml](action.yml).
+
+```yml
+steps:
+  # Recommended: Docker image digest from GitHub Container Registry (best for speed & security)
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:e8640e0a620980247fd6e46f2f43f9a42d17181840518ea7fe983eeed65c154e
+
+  # Major version of a release
+  - uses: codfish/semantic-release-action@v3
+
+  # Minor version of a release
+  - uses: codfish/semantic-release-action@v3.0.1
+
+  # Specific commit
+  - uses: codfish/semantic-release-action@ee5b4afec556c3bf8b9f0b9cd542aade9e486033
+
+  # Git branch
+  - uses: codfish/semantic-release-action@main
+```
+
+> [!NOTE]
+>
+> Whenever you use a custom docker-based GitHub Action like this one, you may notice in your run
+> logs, one of the first steps you'll see will be GA building the image for you. You can speed up
+> runs by pulling pre-built docker images instead of making GitHub Actions build them on every run.
+
+```yml
+steps:
+  # GitHub Container Registry
+  - uses: docker://ghcr.io/codfish/semantic-release-action:v3
+
+  # Dockerhub
+  - uses: docker://codfish/semantic-release-action:v3
+```
+
+> [!TIP]
+>
+> **If you're security conscious**, you can
+> [pin the docker image down to a specific digest](https://francoisbest.com/posts/2020/the-security-of-github-actions#docker-based-actions)
+> instead of using an image tag, which is a mutable reference.
+
+```yml
+steps:
+  # Docker image digest from GitHub Container Registry
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:e8640e0a620980247fd6e46f2f43f9a42d17181840518ea7fe983eeed65c154e
+```
+
+Where `<digest>` is any
+[docker image digest you want here](https://github.com/users/codfish/packages/container/package/semantic-release-action).
+
 ## Why
 
 It's fairly easy to run `semantic-release` as a "host action," aka something that runs directly on
@@ -195,8 +204,10 @@ inputs here, the action will automatically use any
 [`semantic-release` configuration](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
 defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)
 
-> **Note**: Each input **will take precedence** over options configured in the configuration file
-> and shareable configurations.
+> [!NOTE]
+>
+> Each input **will take precedence** over options configured in the configuration file and
+> shareable configurations.
 
 | Input Variable        | Type                        | Description                                                                                                                                                                                                                                                     | Default                                                                                                                                       |
 | --------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -208,17 +219,23 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 | `repository-url`      | `String`                    | The git repository URL                                                                                                                                                                                                                                          | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#repositoryurl)                |
 | `tag-format`          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat)                    |
 
-> **Note**: Any package specified in `extends` or `additional-packages` will be installed
-> automatically for you as a convenience, allowing you to use this action without adding new
-> dependencies to your application or install deps in a separate action step.
+> [!NOTE]
+>
+> Any package specified in `extends` or `additional-packages` will be installed automatically for
+> you as a convenience, allowing you to use this action without adding new dependencies to your
+> application or install deps in a separate action step.
 
-> **Note**: `additional-packages` won't get used automatically, setting this variable will just
-> install them so you can use them. You'll need to actually list them in your `plugins` and/or
-> `extends` configuration for **semantic-release** to use them.
+> [!NOTE]
+>
+> `additional-packages` won't get used automatically, setting this variable will just install them
+> so you can use them. You'll need to actually list them in your `plugins` and/or `extends`
+> configuration for **semantic-release** to use them.
 
-> **Note**: The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use
-> `branches` instead. Previously used in semantic-release v15 to set a single branch on which
-> releases should happen.
+> [!NOTE]
+>
+> The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use `branches`
+> instead. Previously used in semantic-release v15 to set a single branch on which releases should
+> happen.
 
 - **GitHub Actions Inputs:**
   https://help.github.com/en/articles/metadata-syntax-for-github-actions#inputs
@@ -298,6 +315,59 @@ might be so this is a way to cover more cases.
 | RELEASE_GIT_HEAD      | The git hash of the release.                                                                                                                      |
 | RELEASE_GIT_TAG       | The version with v prefix.                                                                                                                        |
 | RELEASE_NAME          | The release name.                                                                                                                                 |
+
+## Recipes
+
+### Including all commit types in a release
+
+By default, `semantic-release` only includes `fix`, `feat`, and `perf` commit types in the release.
+A lot of projects want to include all commit types in their release notes, while still using
+`semantic-release`'s commit analyzer to only create releases for `fix`, `feat`, and `perf` commits.
+
+```yml
+- run: codfish/semantic-release-action@v3
+  with:
+    additional-packages: ['conventional-changelog-conventionalcommits@7']
+    plugins: |
+      [
+        '@semantic-release/commit-analyzer',
+        [
+          "@semantic-release/release-notes-generator",
+          {
+            "preset": "conventionalcommits",
+            "presetConfig": {
+              "types": [
+                { type: 'feat', section: 'Features', hidden: false },
+                { type: 'fix', section: 'Bug Fixes', hidden: false },
+                { type: 'perf', section: 'Performance Improvements', hidden: false },
+                { type: 'revert', section: 'Reverts', hidden: false },
+                { type: 'docs', section: 'Other Updates', hidden: false },
+                { type: 'style', section: 'Other Updates', hidden: false },
+                { type: 'chore', section: 'Other Updates', hidden: false },
+                { type: 'refactor', section: 'Other Updates', hidden: false },
+                { type: 'test', section: 'Other Updates', hidden: false },
+                { type: 'build', section: 'Other Updates', hidden: false },
+                { type: 'ci', section: 'Other Updates', hidden: false }
+              ]
+            }
+          }
+        ],
+        '@semantic-release/npm',
+        '@semantic-release/github'
+      ]
+```
+
+This configuration uses the `conventional-changelog-conventionalcommits` package to generate release
+notes & configures `@semantic-release/release-notes-generator` to include all commit types. Tweaking
+the `types` array will allow you to include or exclude specific commit types & group them to your
+liking.
+
+> [!IMPORTANT]
+>
+> This example uses the `additional-packages` input to install the
+> `conventional-changelog-conventionalcommits` package. This is necessary because `semantic-release`
+> doesn't install it by default & it's required for the customization of the `presetConfig` in the
+> `@semantic-release/release-notes-generator` plugin.
 
 ## Maintenance
 

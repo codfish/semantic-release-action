@@ -7,11 +7,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.7.0
+          node-version: 20.11.0
 
       - run: npm ci
 
@@ -22,25 +24,21 @@ jobs:
         id: semantic-test
         uses: ./
         with:
-          dry_run: true
           branches: |
             [
               '+([0-9])?(.{+([0-9]),x}).x',
               'main',
+              'fooalpha',
+              'foobeta',
               'next',
               'next-major',
-              {
-                name: 'beta',
-                prerelease: true
-              },
-              {
-                name: 'alpha',
-                prerelease: true
-              }
+              { name: 'beta', prerelease: true },
+              { name: 'alpha', prerelease: true },
             ]
+          dry-run: true
           repository-url: https://github.com/codfish/semantic-release-action.git
-          tag-format: 'v${version}'
           extends: '@semantic-release/apm-config'
+          tag-format: 'ver${version}'
           additional-packages: |
             ['@semantic-release/apm', '@semantic-release/git']
           plugins: |
@@ -65,3 +63,15 @@ jobs:
           echo "should be empty: $RELEASE_PATCH"
         env:
           OUTPUTS: ${{ toJson(steps.semantic.outputs) }}
+
+      - name: docker login
+        run: |
+          echo "$GCR_TOKEN" | docker login ghcr.io -u codfish --password-stdin
+        env:
+          GCR_TOKEN: ${{ secrets.GCR_TOKEN }}
+
+      # Dockerhub is auto synced with the repo, no need to explicitly deploy
+      - name: build and push branch docker image to GCR
+        run: |
+          docker build -t ghcr.io/codfish/semantic-release-action:$GITHUB_HEAD_REF .
+          docker push ghcr.io/codfish/semantic-release-action:$GITHUB_HEAD_REF
