@@ -12,17 +12,6 @@ inputs:
       'The branches on which releases should happen.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#branches'
     required: false
-    default: |
-      [
-        'master',
-        'main',
-        'next',
-        'next-major',
-        '+([0-9])?(.{+([0-9]),x}).x',
-        { name: 'beta', prerelease: true },
-        { name: 'alpha', prerelease: true },
-        { name: 'canary', prerelease: true },
-      ]
   extends:
     description:
       'String or array of modules or file paths containing a shareable configuration.
@@ -91,3 +80,12 @@ outputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+  args:
+    - ${{ inputs.branches }}
+    - ${{ inputs.extends }}
+    - ${{ inputs.plugins }}
+    - ${{ inputs.additional-packages }}
+    - ${{ inputs.dry-run }}
+    - ${{ inputs.repository-url }}
+    - ${{ inputs.tag-format }}
+    - ${{ inputs.branch }}

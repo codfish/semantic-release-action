@@ -4,11 +4,11 @@ import semanticRelease from 'semantic-release';
 import JSON5 from 'json5';
 import arrify from 'arrify';
 
-const parseInput = (input) => {
+const parseInput = (input, defaultValue = '') => {
   try {
     return JSON5.parse(input);
   } catch (err) {
-    return input;
+    return defaultValue || input;
   }
 };
 
@@ -74,7 +74,16 @@ const setGitConfigSafeDirectory = () => {
  */
 async function run() {
   const branch = parseInput(core.getInput('branch', { required: false }));
-  const branches = parseInput(core.getInput('branches', { required: false }));
+  const branches = parseInput(core.getInput('branches', { required: false }), [
+    'master',
+    'main',
+    'next',
+    'next-major',
+    '+([0-9])?(.{+([0-9]),x}).x',
+    { name: 'beta', prerelease: true },
+    { name: 'alpha', prerelease: true },
+    { name: 'canary', prerelease: true },
+  ]);
   const plugins = parseInput(core.getInput('plugins', { required: false }));
   const additionalPackages =
     parseInput(core.getInput('additional-packages', { required: false })) || [];
