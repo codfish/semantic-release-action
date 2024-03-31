@@ -199,7 +199,7 @@ You can pass in `semantic-release` configuration options via GitHub Action input
 It's important to note, **NONE** of these inputs are required. Semantic release has a default
 configuration that it will use if you don't provide any.
 
-Also of note, if you'd like to override the default configuration and you'd rather not use the
+Also of note, if you'd like to override the default configuration, and you'd rather not use the
 inputs here, the action will automatically use any
 [`semantic-release` configuration](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
 defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)

@@ -3,6 +3,7 @@ import core from '@actions/core';
 import semanticRelease from 'semantic-release';
 import JSON5 from 'json5';
 import arrify from 'arrify';
+import { cosmiconfig } from 'cosmiconfig';
 
 const parseInput = (input, defaultValue = '') => {
   try {
@@ -73,17 +74,27 @@ const setGitConfigSafeDirectory = () => {
  * @see https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#options
  */
 async function run() {
+  const configFile = await cosmiconfig('release')
+    .search()
+    .then((result) => result?.config);
   const branch = parseInput(core.getInput('branch', { required: false }));
-  const branches = parseInput(core.getInput('branches', { required: false }), [
-    'master',
-    'main',
-    'next',
-    'next-major',
-    '+([0-9])?(.{+([0-9]),x}).x',
-    { name: 'beta', prerelease: true },
-    { name: 'alpha', prerelease: true },
-    { name: 'canary', prerelease: true },
-  ]);
+  // Branches are parsed in this order:
+  // 1. Input from the action
+  // 2. Config file
+  // 3. Default branches set in this action = semantic-release's default branches with the addition of `main`.
+  const branches = parseInput(
+    core.getInput('branches', { required: false }),
+    configFile?.branches || [
+      'master',
+      'main',
+      'next',
+      'next-major',
+      '+([0-9])?(.{+([0-9]),x}).x',
+      { name: 'beta', prerelease: true },
+      { name: 'alpha', prerelease: true },
+      { name: 'canary', prerelease: true },
+    ],
+  );
   const plugins = parseInput(core.getInput('plugins', { required: false }));
   const additionalPackages =
     parseInput(core.getInput('additional-packages', { required: false })) || [];
