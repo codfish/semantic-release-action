@@ -113,7 +113,7 @@ See [action.yml](action.yml).
 ```yml
 steps:
   # Recommended: Docker image digest from GitHub Container Registry (best for speed & security)
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:d396038765af1ceaa77f4ba39130af6e7a7e264bf17cb675ea1b0524d11adf3e
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:9e0bbcc4ca3b3611668dcf911e51432573efb3222587c4ca1cc8a759c1b8283c
 
   # Major version of a release
   - uses: codfish/semantic-release-action@v3
@@ -152,7 +152,7 @@ steps:
 ```yml
 steps:
   # Docker image digest from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:d396038765af1ceaa77f4ba39130af6e7a7e264bf17cb675ea1b0524d11adf3e
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:9e0bbcc4ca3b3611668dcf911e51432573efb3222587c4ca1cc8a759c1b8283c
 ```
 
 Where `<digest>` is any
