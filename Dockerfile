@@ -1,4 +1,6 @@
-FROM node:20.11.0
+FROM node:20.11.0-alpine
+
+RUN apk add --no-cache git
 
 # nice clean home for our action files
 RUN mkdir /action
