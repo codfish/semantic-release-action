@@ -1,6 +1,8 @@
-FROM node:20.11.0-alpine
+FROM node:20.12.1-slim
 
-RUN apk add --no-cache git
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates git \
+    && rm -rf /var/lib/apt/lists/*
 
 # nice clean home for our action files
 RUN mkdir /action
