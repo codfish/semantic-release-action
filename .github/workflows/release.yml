@@ -54,6 +54,14 @@ jobs:
         env:
           SEMANTIC_OUTPUTS: ${{ toJson(steps.semantic-dry-run.outputs) }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: docker login
         run: |
           echo "$GCR_TOKEN" | docker login ghcr.io -u codfish --password-stdin
@@ -62,9 +70,12 @@ jobs:
 
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: build and push latest docker image to GCR
-        run: |
-          docker build -t ghcr.io/codfish/semantic-release-action:latest .
-          docker push ghcr.io/codfish/semantic-release-action:latest
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/amd64
+          push: true
+          tags: ghcr.io/codfish/semantic-release-action:latest
 
       - name: push docker images for releases to GCR
         if: steps.semantic.outputs.new-release-published == 'true'
