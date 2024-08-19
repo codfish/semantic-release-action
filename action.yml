@@ -47,6 +47,10 @@ inputs:
       'The Git tag format used by semantic-release to identify releases.
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat'
     required: false
+  working-directory:
+    description:
+      'The working directory to use for all semantic-release actions.'
+    required: false
   branch:
     description:
       'DEPRECATED. Will continue to be supported for v1. Use `branches` instead. Previously used in
@@ -88,4 +92,5 @@ runs:
     - ${{ inputs.dry-run }}
     - ${{ inputs.repository-url }}
     - ${{ inputs.tag-format }}
+    - ${{ inputs.working-directory }}
     - ${{ inputs.branch }}
