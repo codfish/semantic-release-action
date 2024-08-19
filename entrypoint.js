@@ -74,7 +74,8 @@ const setGitConfigSafeDirectory = () => {
  * @see https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#options
  */
 async function run() {
-  const workingDirectory = parseInput(core.getInput('working-directory', { required: false })) || '.';
+  const workingDirectory =
+    parseInput(core.getInput('working-directory', { required: false })) || '.';
   const configFile = await cosmiconfig('release')
     .search(workingDirectory)
     .then((result) => result?.config);

@@ -48,8 +48,7 @@ inputs:
       https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat'
     required: false
   working-directory:
-    description:
-      'The working directory to use for all semantic-release actions.'
+    description: 'The working directory to use for all semantic-release actions.'
     required: false
   branch:
     description:
