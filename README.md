@@ -216,6 +216,7 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 | `extends`             | `Array`, `String`           | List of modules or file paths containing a shareable configuration.                                                                                                                                                                                             | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#extends)                      |
 | `additional-packages` | `Array`, `String`           | Define a list of additional plugins/configurations (official or community) to install. Use this if you 1) use any plugins other than the defaults, which are already installed along with semantic-release or 2) want to extend from a shareable configuration. | `[]`                                                                                                                                          |
 | `dry-run`             | `Boolean`                   | The objective of the dry-run mode is to get a preview of the pending release. Dry-run mode skips the following steps: prepare, publish, success and fail.                                                                                                       | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#dryrun)                       |
+| `working-directory`   | `String`                    | The working directory to use for all semantic-release actions.                                                                                                                                                                                                  | `.`                                                                                                                                           |
 | `repository-url`      | `String`                    | The git repository URL                                                                                                                                                                                                                                          | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#repositoryurl)                |
 | `tag-format`          | `String`                    | The Git tag format used by semantic-release to identify releases.                                                                                                                                                                                               | [Semantic default](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#tagformat)                    |
 
@@ -266,6 +267,7 @@ steps:
         ]
       repository-url: https://github.com/codfish/semantic-release-action.git
       tag-format: 'v${version}'
+      working-directory: dist
       extends: '@semantic-release/apm-config'
       additional-packages: |
         ['@semantic-release/apm@4.0.0', '@semantic-release/git']

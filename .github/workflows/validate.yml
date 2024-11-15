@@ -39,6 +39,7 @@ jobs:
           repository-url: https://github.com/codfish/semantic-release-action.git
           extends: '@semantic-release/apm-config'
           tag-format: 'ver${version}'
+          working-directory: .
           additional-packages: |
             ['@semantic-release/apm', '@semantic-release/git']
           plugins: |

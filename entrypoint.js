@@ -74,8 +74,10 @@ const setGitConfigSafeDirectory = () => {
  * @see https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#options
  */
 async function run() {
+  const workingDirectory =
+    parseInput(core.getInput('working-directory', { required: false })) || '.';
   const configFile = await cosmiconfig('release')
-    .search()
+    .search(workingDirectory)
     .then((result) => result?.config);
   const branch = parseInput(core.getInput('branch', { required: false }));
   // Branches are parsed in this order:
@@ -112,6 +114,7 @@ async function run() {
   core.debug(`dry-run input: ${dryRun}`);
   core.debug(`repository-url input: ${repositoryUrl}`);
   core.debug(`tag-format input: ${tagFormat}`);
+  core.debug(`working-directory input: ${workingDirectory}`);
 
   setGitConfigSafeDirectory();
 
@@ -143,7 +146,7 @@ async function run() {
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 
-  const result = await semanticRelease(options);
+  const result = await semanticRelease(options, { cwd: workingDirectory });
   if (!result) {
     core.debug('No release published');
 
