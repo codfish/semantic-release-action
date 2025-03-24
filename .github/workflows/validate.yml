@@ -1,6 +1,7 @@
 name: Validate
 
 on: pull_request_target
+permissions: {}
 
 jobs:
   validate:
