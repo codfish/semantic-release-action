@@ -1,0 +1,26 @@
+---
+description: Architecture overview and core components to respect when making changes.
+globs: "**/*"
+alwaysApply: true
+---
+
+## Architecture
+
+### Core Components
+
+- `entrypoint.js` (main logic orchestrating the semantic-release process)
+  - `parseInput()` handles JSON5 parsing of GitHub Action inputs
+  - `installPackages()` dynamically installs additional semantic-release plugins
+  - `setGitConfigSafeDirectory()` configures git for Actions environment
+  - `run()` is the main execution function
+
+- `action.yml` defines inputs and outputs for the Action
+- `Dockerfile` builds a minimal Node.js v22.18.0-slim container
+
+### Key Features to Preserve
+
+- Input processing via JSON5 for arrays/objects from GitHub Actions.
+- Dynamic plugin installation via the `additional-packages` input.
+- Dual output system: set both outputs and environment variables.
+- Multi-platform support: AMD64 and ARM64 images.
+

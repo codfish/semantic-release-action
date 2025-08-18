@@ -1,0 +1,22 @@
+---
+description: Documented inputs and outputs for the GitHub Action to guide changes.
+globs: "**/*"
+alwaysApply: true
+---
+
+## Inputs (all optional)
+
+- `branches`: Semantic-release branch configuration (JSON5 array/string/object)
+- `plugins`: Plugin list for semantic-release execution
+- `additional-packages`: Extra packages/plugins to install at runtime (JSON5 array/string)
+- `dry-run`: Preview mode without actual release
+- `working-directory`: Working directory for semantic-release
+
+## Outputs (also exported as environment variables)
+
+- Version components: `release-version`, `release-major`, `release-minor`, `release-patch`
+- Release metadata: `new-release-published`, `release-notes`, `type`, `channel`
+- Git information: `git-head`, `git-tag`, `name`
+
+Guidance: When modifying behavior, ensure both GitHub Action outputs and environment variables remain accurate and in sync.
+

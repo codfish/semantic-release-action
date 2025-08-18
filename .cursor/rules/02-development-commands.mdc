@@ -1,0 +1,27 @@
+---
+description: Development commands for linting, formatting, testing, and Docker operations.
+globs: "**/*"
+alwaysApply: true
+---
+
+## Development Commands
+
+Use these commands for local development and validation.
+
+```bash
+# Linting and formatting
+npm run lint          # Lint code using cod-scripts (ESLint)
+npm run format        # Format code using cod-scripts (Prettier)
+npm run lint:commit   # Lint commit messages (commitlint)
+
+# Testing
+npm test              # Run tests using cod-scripts
+
+# Docker operations (for local testing)
+docker build -t semantic-release-action .
+docker run --rm semantic-release-action
+
+# Node.js version management
+# Use Node.js v22.18.0 (specified in .nvmrc)
+```
+
