@@ -4,8 +4,8 @@ GitHub Action for running `semantic-release`. Respects any semantic-release conf
 your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
 for you to use in subsequent actions containing version numbers.
 
-> **Note**: `v3` of this action uses semantic-release v22 & node v20.9. `v2` uses semantic-release
-> v20 & node v18.7.
+> **Note**: `v4` of this action uses semantic-release v24 & node v22.18.0. `v3` uses
+> `semantic-release` v22 & node v20.9. `v2` uses `semantic-release` v20 & node v18.7.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -25,8 +25,10 @@ for you to use in subsequent actions containing version numbers.
 
 > [!IMPORTANT]
 >
-> Check the release notes for help
-> [migrating to v3](https://github.com/codfish/semantic-release-action/releases/tag/v3.0.0).
+> Check the release notes for help:
+>
+> - [migrating to v4](https://github.com/codfish/semantic-release-action/releases/tag/v4.0.0).
+> - [migrating to v3](https://github.com/codfish/semantic-release-action/releases/tag/v3.0.0).
 
 ## Usage
 
@@ -34,7 +36,7 @@ for you to use in subsequent actions containing version numbers.
 steps:
   - uses: actions/checkout@v5
 
-  - uses: codfish/semantic-release-action@v3
+  - uses: codfish/semantic-release-action@v4
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -47,7 +49,7 @@ steps:
   - uses: actions/checkout@v5
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v3
+  - uses: codfish/semantic-release-action@v4
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +73,7 @@ steps:
   - uses: actions/checkout@v5
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v3
+  - uses: codfish/semantic-release-action@v4
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -92,7 +94,7 @@ steps:
 steps:
   - uses: actions/checkout@v5
 
-  - uses: codfish/semantic-release-action@v3
+  - uses: codfish/semantic-release-action@v4
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -114,13 +116,13 @@ See [action.yml](action.yml).
 ```yml
 steps:
   # Recommended: Docker image digest from GitHub Container Registry (best for speed & security)
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4c0955361cf42e5ab9bb05df3a1e2a781c443f9760b63a68957689445051a2fb
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:5d5447090feb2f9252aac2825ef14e244ecf53528fbe87d585b459adb547b914
 
   # Major version of a release
-  - uses: codfish/semantic-release-action@v3
+  - uses: codfish/semantic-release-action@v4
 
   # Minor version of a release
-  - uses: codfish/semantic-release-action@v3.0.1
+  - uses: codfish/semantic-release-action@v4.0.1
 
   # Specific commit
   - uses: codfish/semantic-release-action@ee5b4afec556c3bf8b9f0b9cd542aade9e486033
@@ -138,10 +140,10 @@ steps:
 ```yml
 steps:
   # GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action:v3
+  - uses: docker://ghcr.io/codfish/semantic-release-action:v4
 
   # Dockerhub
-  - uses: docker://codfish/semantic-release-action:v3
+  - uses: docker://codfish/semantic-release-action:v4
 ```
 
 > [!TIP]
@@ -153,7 +155,7 @@ steps:
 ```yml
 steps:
   # Docker image digest from GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:4c0955361cf42e5ab9bb05df3a1e2a781c443f9760b63a68957689445051a2fb
+  - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:5d5447090feb2f9252aac2825ef14e244ecf53528fbe87d585b459adb547b914
 ```
 
 Where `<digest>` is any
@@ -248,7 +250,7 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 
 ```yml
 steps:
-  - run: codfish/semantic-release-action@v3
+  - run: codfish/semantic-release-action@v4
     with:
       dry-run: true
       branches: |
@@ -328,7 +330,7 @@ A lot of projects want to include all commit types in their release notes, while
 `semantic-release`'s commit analyzer to only create releases for `fix`, `feat`, and `perf` commits.
 
 ```yml
-- run: codfish/semantic-release-action@v3
+- run: codfish/semantic-release-action@v4
   with:
     additional-packages: ['conventional-changelog-conventionalcommits@7']
     plugins: |
@@ -375,12 +377,12 @@ liking.
 ## Maintenance
 
 > Make the new release available to those binding to the major version tag: Move the major version
-> tag (v2, v3, etc.) to point to the ref of the current release. This will act as the stable release
+> tag (v3, v4, etc.) to point to the ref of the current release. This will act as the stable release
 > for that major version. You should keep this tag updated to the most recent stable minor/patch
 > release.
 
 ```sh
-git tag -fa v3 -m "Update v3 tag" && git push origin v3 --force
+git tag -fa v4 -m "Update v4 tag" && git push origin v4 --force
 ```
 
 **Reference**:
@@ -397,5 +399,5 @@ repositories at this branch-tagged image to try changes before merging.
 ```
 
 Replace `<branch-name>` with the PR's branch name (for example, `feature/xyz`). Switch back to your
-pinned version (for example, `codfish/semantic-release-action@v3` or a specific digest) when you're
+pinned version (for example, `codfish/semantic-release-action@v4` or a specific digest) when you're
 done testing.
