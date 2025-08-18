@@ -1,4 +1,4 @@
-FROM node:20.12.1-slim
+FROM node:22.18.0-slim
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates git \
