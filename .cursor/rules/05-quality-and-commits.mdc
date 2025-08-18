@@ -1,0 +1,14 @@
+---
+description: Code quality, formatting, testing, and commit conventions.
+globs: "**/*"
+alwaysApply: true
+---
+
+## Code Quality and Conventions
+
+- Use `cod-scripts` for linting, formatting, and testing.
+- Follow Conventional Commits; commit messages are linted via commitlint.
+- Husky pre-commit hooks should pass locally.
+
+When proposing edits, keep changes minimal, readable, and aligned with existing style. Avoid introducing unnecessary dependencies.
+

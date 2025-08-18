@@ -1,0 +1,16 @@
+---
+description: Testing strategy and expectations for validating changes.
+globs: "**/*"
+alwaysApply: true
+---
+
+## Testing Strategy
+
+- Minimal unit tests exist in `entrypoint.spec.js`.
+- Extensive integration testing happens via dogfooding in CI workflows.
+- Use dry-run mode to validate changes with various configurations in the validation workflow.
+
+Guidance:
+- Prefer adding/adjusting tests that run in CI (dry-run) when changing release behavior.
+- Add focused unit tests for edge cases in parsing, dynamic installs, and output formatting.
+

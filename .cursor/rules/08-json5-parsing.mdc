@@ -1,0 +1,24 @@
+---
+description: Rules for parsing GitHub Action inputs using JSON5 with graceful fallback.
+globs: "**/*"
+alwaysApply: true
+---
+
+## JSON5 Input Parsing
+
+Action inputs that are arrays/objects must be parsed using JSON5 and fall back gracefully when not valid JSON5.
+
+```javascript
+const parseInput = (input, defaultValue = '') => {
+  try {
+    return JSON5.parse(input);
+  } catch (err) {
+    return defaultValue || input;
+  }
+};
+```
+
+Guidance:
+- Do not replace with `JSON.parse`; inputs must tolerate comments, single quotes, and trailing commas.
+- Preserve the fallback behavior to return `defaultValue` or the raw `input` when parsing fails.
+

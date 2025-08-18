@@ -1,0 +1,25 @@
+---
+description: Dynamic installation of additional semantic-release plugins at runtime.
+globs: "**/*"
+alwaysApply: true
+---
+
+## Dynamic Package Installation
+
+Packages specified in the `additional-packages` input are installed at runtime with `npm` using flags that avoid modifying lockfiles or running audits.
+
+```javascript
+const spawn = childProcess.spawnSync('npm', [
+  'install',
+  '--no-save',
+  '--no-audit',
+  '--no-fund',
+  '--force',
+  ...packages,
+]);
+```
+
+Guidance:
+- Keep the install minimal and non-persistent; do not write to `package.json` or `package-lock.json`.
+- Prefer deterministic installs and avoid adding global state.
+

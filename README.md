@@ -19,6 +19,7 @@ for you to use in subsequent actions containing version numbers.
 - [Recipes](#recipes)
   - [Including all commit types in a release](#including-all-commit-types-in-a-release)
 - [Maintenance](#maintenance)
+  - [Test pull requests in downstream apps before merging](#test-pull-requests-in-downstream-apps-before-merging)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -31,7 +32,7 @@ for you to use in subsequent actions containing version numbers.
 
 ```yml
 steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v5
 
   - uses: codfish/semantic-release-action@v3
     env:
@@ -43,7 +44,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v5
 
   # you'll need to add an `id` in order to access output variables
   - uses: codfish/semantic-release-action@v3
@@ -67,7 +68,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v5
 
   # you'll need to add an `id` in order to access output variables
   - uses: codfish/semantic-release-action@v3
@@ -89,7 +90,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v5
 
   - uses: codfish/semantic-release-action@v3
     env:
@@ -384,3 +385,17 @@ git tag -fa v3 -m "Update v3 tag" && git push origin v3 --force
 
 **Reference**:
 https://github.com/actions/toolkit/blob/main/docs/action-versioning.md#recommendations
+
+### Test pull requests in downstream apps before merging
+
+Our validation workflow builds and publishes a multi-arch Docker image to GitHub Container Registry
+for every pull request, tagging the image with the PR's branch name. You can point downstream
+repositories at this branch-tagged image to try changes before merging.
+
+```yml
+- uses: docker://ghcr.io/codfish/semantic-release-action:<branch-name>
+```
+
+Replace `<branch-name>` with the PR's branch name (for example, `feature/xyz`). Switch back to your
+pinned version (for example, `codfish/semantic-release-action@v3` or a specific digest) when you're
+done testing.
