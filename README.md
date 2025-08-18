@@ -31,7 +31,7 @@ for you to use in subsequent actions containing version numbers.
 
 ```yml
 steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v5
 
   - uses: codfish/semantic-release-action@v3
     env:
@@ -43,7 +43,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v5
 
   # you'll need to add an `id` in order to access output variables
   - uses: codfish/semantic-release-action@v3
@@ -67,7 +67,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v5
 
   # you'll need to add an `id` in order to access output variables
   - uses: codfish/semantic-release-action@v3
@@ -89,7 +89,7 @@ steps:
 
 ```yml
 steps:
-  - uses: actions/checkout@v3
+  - uses: actions/checkout@v5
 
   - uses: codfish/semantic-release-action@v3
     env:
