@@ -8,15 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      - uses: actions/setup-node@v3
+      - uses: codfish/actions/setup-node-and-install@v1.0.0
         with:
-          node-version-file: '.nvmrc'
-
-      - run: npm ci
+          node-version: lts/*
 
       - run: npm run lint
 
