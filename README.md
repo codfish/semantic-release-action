@@ -106,8 +106,15 @@ steps:
       echo $RELEASE_PATCH
 ```
 
-If you're _not_ publishing to npm and only want to use this action for GitHub releases, the easiest
-approach would simply be to add `"private": true,` to your `package.json`.
+> [!NOTE]
+>
+> If you're _not_ publishing to npm and only want to use this action for GitHub releases, the
+> easiest approach would simply be to add `"private": true,` to your `package.json`.
+
+> [!NOTE]
+>
+> For scoped packages that you want to be public, you'll need to add
+> `"publishConfig": { "access": "public" },` to your `package.json`.
 
 ### Which Version to Use
 
