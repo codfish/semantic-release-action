@@ -28,6 +28,7 @@ const installPackages = (packages) => {
       ['install', '--no-save', '--no-audit', '--no-fund', '--force', ...packagesArr],
       {
         stdio: ['inherit', 'inherit', 'pipe'],
+        cwd: '/action',
       },
     );
     if (spawn.status !== 0) {
