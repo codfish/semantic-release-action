@@ -72,19 +72,19 @@ jobs:
       # the new release tag and major release tag.
       - name: Create tags list
         id: tags
+        if: steps.semantic.outputs.new-release-published == 'true'
         shell: bash
         run: |
           TAGS="ghcr.io/codfish/semantic-release-action:latest"
-          if [ "${{ steps.semantic.outputs.new-release-published }}" == "true" ]; then
-            TAGS="${TAGS},ghcr.io/codfish/semantic-release-action:v${{ steps.semantic.outputs.release-version }}"
-            TAGS="${TAGS},ghcr.io/codfish/semantic-release-action:v${{ steps.semantic.outputs.release-major }}"
-          fi
+          TAGS="${TAGS},ghcr.io/codfish/semantic-release-action:v${{ steps.semantic.outputs.release-version }}"
+          TAGS="${TAGS},ghcr.io/codfish/semantic-release-action:v${{ steps.semantic.outputs.release-major }}"
           echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
 
-      # Push docker images to GCR
+      # Push docker images to GCR 
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: Build and push docker images to GCR
         uses: docker/build-push-action@v5
+        if: steps.semantic.outputs.new-release-published == 'true'
         with:
           context: .
           platforms: linux/arm64,linux/amd64
