@@ -14,7 +14,7 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.11.1",
+    "@actions/core": "^3.0.0",
     "@babel/runtime": "^7.28.3",
     "arrify": "^3.0.0",
     "cosmiconfig": "^9.0.0",
