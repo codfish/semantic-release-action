@@ -78,6 +78,12 @@ jobs:
         env:
           GCR_TOKEN: ${{ secrets.GCR_TOKEN }}
 
+      - name: Normalize branch tag
+        id: branch-tag
+        run: |
+          SAFE_TAG="$(printf '%s' "${{ github.head_ref }}" | tr '[:upper:]' '[:lower:]' | sed -e 's#[^a-z0-9_.-]#-#g')"
+          echo "tag=${SAFE_TAG}" >> "$GITHUB_OUTPUT"
+
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: build and push branch docker image to GCR
         uses: docker/build-push-action@v5
@@ -85,4 +91,4 @@ jobs:
           context: .
           platforms: linux/arm64,linux/amd64
           push: true
-          tags: ghcr.io/codfish/semantic-release-action:${{ github.head_ref }}
+          tags: ghcr.io/codfish/semantic-release-action:${{ steps.branch-tag.outputs.tag }}
