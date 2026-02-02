@@ -12,7 +12,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      - uses: codfish/actions/setup-node-and-install@v1.0.0
+      - uses: codfish/actions/setup-node-and-install@v3.1.0
         with:
           node-version: lts/*
 
