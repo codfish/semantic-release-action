@@ -1,14 +1,15 @@
-import * as childProcess from 'child_process';
-import core from '@actions/core';
-import semanticRelease from 'semantic-release';
-import JSON5 from 'json5';
+import * as core from '@actions/core';
 import arrify from 'arrify';
+import * as childProcess from 'child_process';
 import { cosmiconfig } from 'cosmiconfig';
+import JSON5 from 'json5';
+import semanticRelease from 'semantic-release';
 
 const parseInput = (input, defaultValue = '') => {
   try {
     return JSON5.parse(input);
   } catch (err) {
+    core.debug(`Error parsing input: ${err}`);
     return defaultValue || input;
   }
 };
@@ -19,7 +20,7 @@ const parseInput = (input, defaultValue = '') => {
  * @param {string|string[]} packages - List of packages to install.
  * @returns {object} - Response from `child_process.spawnSync()`.
  */
-const installPackages = (packages) => {
+const installPackages = packages => {
   try {
     const packagesArr = arrify(packages);
     core.debug(`Installing additional packages: ${packagesArr}`);
@@ -75,11 +76,10 @@ const setGitConfigSafeDirectory = () => {
  * @see https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#options
  */
 async function run() {
-  const workingDirectory =
-    parseInput(core.getInput('working-directory', { required: false })) || '.';
+  const workingDirectory = parseInput(core.getInput('working-directory', { required: false })) || '.';
   const configFile = await cosmiconfig('release')
     .search(workingDirectory)
-    .then((result) => result?.config);
+    .then(result => result?.config);
   const branch = parseInput(core.getInput('branch', { required: false }));
   // Branches are parsed in this order:
   // 1. Input from the action
@@ -99,8 +99,7 @@ async function run() {
     ],
   );
   const plugins = parseInput(core.getInput('plugins', { required: false }));
-  const additionalPackages =
-    parseInput(core.getInput('additional-packages', { required: false })) || [];
+  const additionalPackages = parseInput(core.getInput('additional-packages', { required: false })) || [];
   const extendsInput = parseInput(core.getInput('extends', { required: false }));
   let dryRun = core.getInput('dry-run', { required: false });
   dryRun = dryRun !== '' ? dryRun === 'true' : '';
@@ -141,9 +140,7 @@ async function run() {
   core.debug(`options before cleanup: ${JSON.stringify(options)}`);
 
   // remove falsey options
-  Object.keys(options).forEach(
-    (key) => (options[key] === undefined || options[key] === '') && delete options[key],
-  );
+  Object.keys(options).forEach(key => (options[key] === undefined || options[key] === '') && delete options[key]);
 
   core.debug(`options after cleanup: ${JSON.stringify(options)}`);
 

@@ -5,58 +5,33 @@
   "homepage": "https://github.com/codfish/semantic-release-action",
   "author": {
     "name": "Chris O'Donnell",
-    "email": "dev@codfish.io",
-    "url": "https://codfish.io"
+    "email": "chris@codfish.dev",
+    "url": "https://codfish.dev"
   },
   "type": "module",
   "main": "entrypoint.js",
   "keywords": [],
   "private": true,
   "license": "MIT",
-  "dependencies": {
-    "@actions/core": "^1.11.1",
-    "@babel/runtime": "^7.28.3",
-    "arrify": "^3.0.0",
-    "cosmiconfig": "^9.0.0",
-    "json5": "^2.2.1",
-    "semantic-release": "^24.2.7"
-  },
-  "devDependencies": {
-    "cod-scripts": "^12.1.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/codfish/semantic-release-action.git"
   },
   "scripts": {
-    "format": "cod-scripts format",
-    "lint": "cod-scripts lint",
-    "lint:commit": "cod-scripts commitlint",
-    "test": "cod-scripts test"
+    "format": "eslint --fix",
+    "lint": "eslint",
+    "test": "echo 'No tests'"
   },
-  "eslintConfig": {
-    "extends": [
-      "./node_modules/cod-scripts/eslint.js"
-    ]
+  "dependencies": {
+    "@actions/core": "^3.0.0",
+    "arrify": "^3.0.0",
+    "cosmiconfig": "^9.0.0",
+    "json5": "^2.2.1",
+    "semantic-release": "^25.0.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "cod-scripts pre-commit",
-      "commit-msg": "cod-scripts commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "footer-max-line-length": [
-        0,
-        "never"
-      ]
-    }
-  },
-  "volta": {
-    "node": "22.18.0"
+  "devDependencies": {
+    "@codfish/eslint-config": "^12.2.0",
+    "eslint": "^9.39.2",
+    "vitest": "^4.0.18"
   }
 }
