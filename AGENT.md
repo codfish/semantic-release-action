@@ -15,30 +15,25 @@ environment variables for use in subsequent workflow steps.
 
 ## Development Commands
 
+Use these commands for local development and validation:
+
 ```bash
 # Linting and formatting
-npm run lint          # Lint code using cod-scripts (ESLint)
-npm run format        # Format code using cod-scripts (Prettier)
-npm run lint:commit   # Lint commit messages (commitlint)
+npm run lint          # Lint code using ESLint
+npm run format        # Format code using Prettier
 
 # Testing
-npm test              # Run tests using cod-scripts
+npm test              # Run tests using Vitest
 
 # Docker operations (for local testing)
 docker build -t semantic-release-action .
 docker run --rm semantic-release-action
 
 # Node.js version management
-# Use Node.js v22.18.0 (specified in .nvmrc)
+# Use Node.js v24.13.0 (specified in .nvmrc)
 ```
 
-See [.cursor/rules/02-development-commands.mdc](.cursor/rules/02-development-commands.mdc) for more
-information on development commands.
-
 ## Architecture
-
-See [.cursor/rules/03-architecture.mdc](.cursor/rules/03-architecture.mdc) for more information on
-architecture overview.
 
 ### Core Components
 
@@ -51,9 +46,9 @@ architecture overview.
   - `run()`: Main execution function
 
 - **action.yml**: GitHub Action metadata defining 9 input parameters and 11 outputs
-- **Dockerfile**: Node.js v22.18.0-slim container with minimal dependencies
+- **Dockerfile**: Node.js v24.13.0-slim container with minimal dependencies
 
-### Key Features
+### Key Features to Preserve
 
 - **Input Processing**: Uses JSON5 to parse complex inputs (arrays, objects) from GitHub Actions
 - **Dynamic Plugin Installation**: Installs additional semantic-release plugins via
@@ -61,36 +56,18 @@ architecture overview.
 - **Dual Output System**: Sets both GitHub Action outputs and environment variables
 - **Multi-platform Support**: Docker images built for AMD64 and ARM64
 
-## Development Workflow
+## Inputs & Outputs
 
-### Code Quality
-
-- Uses `cod-scripts` for linting, formatting, and testing
-- Follows conventional commits (enforced by commitlint)
-- Husky pre-commit hooks ensure code quality
-
-See [.cursor/rules/05-quality-and-commits.mdc](.cursor/rules/05-quality-and-commits.mdc) for more
-information on code quality and conventions.
-
-### CI/CD Pipelines
-
-- **Release workflow** (.github/workflows/release.yml): Dogfoods the action itself, builds
-  multi-platform Docker images
-- **Validation workflow** (.github/workflows/validate.yml): Runs on PRs, performs dry-run testing
-
-See [.cursor/rules/07-ci-cd.mdc](.cursor/rules/07-ci-cd.mdc) for more information on CI/CD
-pipelines.
-
-### Key Inputs (all optional)
+### Inputs (all optional)
 
 - `branches`: Semantic-release branch configuration (JSON5 array/string/object)
 - `plugins`: Plugin list for semantic-release execution
-- `additional-packages`: Dynamic plugin installation (JSON5 array/string)
+- `additional-packages`: Extra packages/plugins to install at runtime (JSON5 array/string)
 - `dry-run`: Preview mode without actual release
 - `working-directory`: Working directory for semantic-release
-
-See [.cursor/rules/04-inputs-outputs.mdc](.cursor/rules/04-inputs-outputs.mdc) for more information
-on inputs and outputs.
+- `repository-url`: The git repository URL
+- `tag-format`: The Git tag format used by semantic-release to identify releases
+- `extends`: List of modules or file paths containing a shareable configuration
 
 ### Outputs Available
 
@@ -100,14 +77,65 @@ Both as Action outputs and environment variables:
 - Release metadata: `new-release-published`, `release-notes`, `type`, `channel`
 - Git information: `git-head`, `git-tag`, `name`
 
+**Guidance**: When modifying behavior, ensure both GitHub Action outputs and environment variables
+remain accurate and in sync.
+
+## Development Workflow
+
+### Code Quality
+
+- Uses ESLint for linting, Prettier for formatting, and Vitest for testing
+- Follows Conventional Commits (enforced by commitlint)
+- Husky pre-commit hooks ensure code quality
+
+**Guidance**: Keep changes minimal, readable, and aligned with existing style. Avoid introducing
+unnecessary dependencies.
+
+### CI/CD Pipelines
+
+- **Release workflow** (`.github/workflows/release.yml`): Dogfoods the action itself, builds
+  multi-platform Docker images
+- **Validation workflow** (`.github/workflows/validate.yml`): Runs on PRs, performs dry-run testing
+
+**Guidance**:
+
+- Ensure changes remain compatible with both AMD64 and ARM64 build matrix
+- Keep validation fast and reliable; prefer dry-run checks over full releases in PRs
+
 ## Testing Strategy
 
 - Minimal unit tests in `entrypoint.spec.js`
 - Extensive integration testing via dogfooding in CI workflows
 - Dry-run mode testing with various configurations in validation workflow
 
-See [.cursor/rules/06-testing-strategy.mdc](.cursor/rules/06-testing-strategy.mdc) for more
-information on testing strategy.
+## Dynamic Package Installation
+
+Packages specified in the `additional-packages` input are installed at runtime with `npm` using
+flags that avoid modifying lockfiles or running audits.
+
+```javascript
+const spawn = childProcess.spawnSync('npm', [
+  'install',
+  '--no-save',
+  '--no-audit',
+  '--no-fund',
+  '--force',
+  ...packages,
+]);
+```
+
+**Flag Explanations**:
+
+- `--no-save`: Prevents writing to `package.json` or `package-lock.json`
+- `--no-audit`: Skips security audit (faster installs)
+- `--no-fund`: Suppresses funding messages
+- `--force`: Forces installation even if there are conflicts
+
+**Guidance**:
+
+- Keep the install minimal and non-persistent; do not write to `package.json` or
+  `package-lock.json`
+- Prefer deterministic installs and avoid adding global state
 
 ## Common Patterns
 
@@ -125,30 +153,15 @@ const parseInput = (input, defaultValue = '') => {
 };
 ```
 
-### Dynamic Package Installation
+## Important Notes & Constraints
 
-Packages specified in `additional-packages` are installed at runtime:
+- **Uses ES modules** (`"type": "module"` in `package.json`)
+- **Configuration precedence**: Action inputs > Config files > Defaults
+- **Requires `GITHUB_TOKEN`** environment variable for GitHub releases
+- **Container runs as single process**: `node /action/entrypoint.js`
+- **Target Node.js version**: v24.13.0 (per `.nvmrc`)
 
-```javascript
-const spawn = childProcess.spawnSync('npm', [
-  'install',
-  '--no-save',
-  '--no-audit',
-  '--no-fund',
-  '--force',
-  ...packages,
-]);
-```
+**Guidance**:
 
-See [.cursor/rules/09-dynamic-installation.mdc](.cursor/rules/09-dynamic-installation.mdc) for more
-information on dynamic installation.
-
-## Important Notes
-
-- Uses ES modules (`"type": "module"` in package.json)
-- Follows semantic-release configuration precedence: Action inputs > Config files > Defaults
-- Requires `GITHUB_TOKEN` environment variable for GitHub releases
-- Container runs as single process: `node /action/entrypoint.js`
-
-See [.cursor/rules/10-important-notes.mdc](.cursor/rules/10-important-notes.mdc) for more
-information on important notes.
+- Maintain ESM imports/exports; avoid CommonJS regressions
+- Do not break precedence or dual-output guarantees when changing configuration handling

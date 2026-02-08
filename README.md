@@ -4,9 +4,34 @@ GitHub Action for running `semantic-release`. Respects any semantic-release conf
 your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
 for you to use in subsequent actions containing version numbers.
 
-> **Note**: `v4` of this action uses semantic-release v24 & node v22.18.0. `v3` uses
-> `semantic-release` v22 & node v20.9. `v2` uses `semantic-release` v20 & node v18.7.
+> **Note**: `v5` of this action uses semantic-release v25 & node v24.13.0. `v4` uses
+> semantic-release v24 & node v22.18.0. `v3` uses `semantic-release` v22 & node v20.9.
 
+## Migrating to v5
+
+> [!TIP]
+>
+> **Good news!** While v5 is technically a "breaking" release, **there's a high probability you won't
+> need to make any changes to your workflow**. The breaking changes are in the underlying
+> semantic-release plugins, not in this action's interface.
+>
+> **What's new in v5:**
+>
+> - **npm OIDC Trusted Publishing support** - You can now publish to npm without storing long-lived
+>   `NPM_TOKEN` secrets by using GitHub's OIDC token provider. This is more secure and eliminates
+>   credential management overhead. ([Learn more](#npm-oidc-trusted-publishing))
+> - **Updated dependencies** - semantic-release v25, @semantic-release/npm v13, Node v24.13.0
+>
+> **Migration checklist:**
+>
+> 1. Update your workflow to use `@v5` instead of `@v4` (or preferably the recommended docker digest or commit sha below)
+> 2. Test in a branch first (the GitHub plugin has architectural changes that may affect edge cases)
+> 3. _(Optional)_ Migrate to npm OIDC Trusted Publishing for better security
+>
+> See the [full v5.0.0 release notes](https://github.com/codfish/semantic-release-action/releases/tag/v5.0.0)
+> for detailed migration steps.
+
+<!-- eslint-disable -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
@@ -22,11 +47,13 @@ for you to use in subsequent actions containing version numbers.
   - [Test pull requests in downstream apps before merging](#test-pull-requests-in-downstream-apps-before-merging)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<!-- eslint-enable -->
 
 > [!IMPORTANT]
 >
 > Check the release notes for help:
 >
+> - [migrating to v5](https://github.com/codfish/semantic-release-action/releases/tag/v5.0.0).
 > - [migrating to v4](https://github.com/codfish/semantic-release-action/releases/tag/v4.0.0).
 > - [migrating to v3](https://github.com/codfish/semantic-release-action/releases/tag/v3.0.0).
 
@@ -36,11 +63,23 @@ for you to use in subsequent actions containing version numbers.
 steps:
   - uses: actions/checkout@v5
 
-  - uses: codfish/semantic-release-action@v4
+  - uses: codfish/semantic-release-action@v5
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
+
+> [!IMPORTANT]
+>
+> **Avoid `registry-url` in setup-node**
+>
+> Do not set the `registry-url` option in `actions/setup-node` when using this action for npm
+> publishing. The `registry-url` configuration causes `setup-node` to generate an `.npmrc` file that
+> interferes with semantic-release's authentication handling, potentially triggering
+> `EINVALIDNPMTOKEN` errors.
+>
+> Instead, manage registry settings through your project's `.npmrc` file. This prevents conflicts
+> and ensures consistent behavior between local development and CI environments.
 
 **Using output variables set by `semantic-release-action`:**
 
@@ -49,7 +88,7 @@ steps:
   - uses: actions/checkout@v5
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v4
+  - uses: codfish/semantic-release-action@v5
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,7 +112,7 @@ steps:
   - uses: actions/checkout@v5
 
   # you'll need to add an `id` in order to access output variables
-  - uses: codfish/semantic-release-action@v4
+  - uses: codfish/semantic-release-action@v5
     id: semantic
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -94,7 +133,7 @@ steps:
 steps:
   - uses: actions/checkout@v5
 
-  - uses: codfish/semantic-release-action@v4
+  - uses: codfish/semantic-release-action@v5
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -126,10 +165,10 @@ steps:
   - uses: docker://ghcr.io/codfish/semantic-release-action@sha256:327a3ce08284f9dd9b83b607e3f668dae90139e68ce90780b0a43a09d577dc3a
 
   # Major version of a release
-  - uses: codfish/semantic-release-action@v4
+  - uses: codfish/semantic-release-action@v5
 
   # Minor version of a release
-  - uses: codfish/semantic-release-action@v4.0.1
+  - uses: codfish/semantic-release-action@v5.0.0
 
   # Specific commit
   - uses: codfish/semantic-release-action@ee5b4afec556c3bf8b9f0b9cd542aade9e486033
@@ -147,10 +186,10 @@ steps:
 ```yml
 steps:
   # GitHub Container Registry
-  - uses: docker://ghcr.io/codfish/semantic-release-action:v4
+  - uses: docker://ghcr.io/codfish/semantic-release-action:v5
 
   # Dockerhub
-  - uses: docker://codfish/semantic-release-action:v4
+  - uses: docker://codfish/semantic-release-action:v5
 ```
 
 > [!TIP]
@@ -257,7 +296,7 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 
 ```yml
 steps:
-  - run: codfish/semantic-release-action@v4
+  - uses: codfish/semantic-release-action@v5
     with:
       dry-run: true
       branches: |
@@ -337,7 +376,7 @@ A lot of projects want to include all commit types in their release notes, while
 `semantic-release`'s commit analyzer to only create releases for `fix`, `feat`, and `perf` commits.
 
 ```yml
-- run: codfish/semantic-release-action@v4
+- uses: codfish/semantic-release-action@v5
   with:
     additional-packages: ['conventional-changelog-conventionalcommits@7']
     plugins: |
@@ -381,15 +420,70 @@ liking.
 > doesn't install it by default & it's required for the customization of the `presetConfig` in the
 > `@semantic-release/release-notes-generator` plugin.
 
+### npm OIDC Trusted Publishing
+
+**New in v5!** With semantic-release v25 and @semantic-release/npm v13, you can now publish to npm
+using OIDC-based trusted publishing instead of long-lived `NPM_TOKEN` secrets. This is more secure
+and eliminates the need to store sensitive credentials as repository secrets.
+
+**Benefits:**
+
+- 🔐 **No more long-lived tokens** - Authenticate using GitHub's OIDC token provider
+- ✅ **Provenance attestation** - Automatically generates npm provenance for supply chain security
+- 🎯 **Simpler credential management** - No secrets to rotate or manage
+
+**Setup:**
+
+1. **Configure your npm package** for trusted publishing from GitHub Actions:
+   - Go to your package settings on npmjs.com
+   - Enable trusted publishing and add your GitHub repository
+
+2. **Update your workflow** to use OIDC:
+
+```yml
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Required for OIDC authentication
+      contents: write  # Required to create releases
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: codfish/semantic-release-action@v5
+        with:
+          plugins: |
+            [
+              '@semantic-release/commit-analyzer',
+              '@semantic-release/release-notes-generator',
+              ['@semantic-release/npm', { npmPublish: true, provenance: true }],
+              '@semantic-release/github'
+            ]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # No NPM_TOKEN needed! npm will authenticate via OIDC
+```
+
+3. **Remove the `NPM_TOKEN` secret** from your repository (you don't need it anymore!)
+
+**Learn more:**
+
+- [npm's Trusted Publishing guide](https://docs.npmjs.com/generating-provenance-statements)
+- [@semantic-release/npm documentation](https://github.com/semantic-release/npm#provenance)
+
 ## Maintenance
 
-> Make the new release available to those binding to the major version tag: Move the major version
-> tag (v3, v4, etc.) to point to the ref of the current release. This will act as the stable release
-> for that major version. You should keep this tag updated to the most recent stable minor/patch
-> release.
+> The release workflow automatically updates the major version tag (v3, v4, v5, etc.) to point to the
+> latest release for that major version. This allows users binding to the major version tag to
+> automatically receive the most recent stable minor/patch releases.
+
+This happens automatically in the [release workflow](.github/workflows/release.yml) after each successful release.
+
+If you need to update the major version tag manually:
 
 ```sh
-git tag -fa v4 -m "Update v4 tag" && git push origin v4 --force
+git tag -fa v5 -m "Update v5 tag" && git push origin v5 --force
 ```
 
 **Reference**:
@@ -406,5 +500,5 @@ repositories at this branch-tagged image to try changes before merging.
 ```
 
 Replace `<branch-name>` with the PR's branch name (for example, `feature/xyz`). Switch back to your
-pinned version (for example, `codfish/semantic-release-action@v4` or a specific digest) when you're
+pinned version (for example, `codfish/semantic-release-action@v5` or a specific digest) when you're
 done testing.

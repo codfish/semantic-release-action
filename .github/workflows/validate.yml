@@ -1,6 +1,7 @@
 name: Validate
 
 on: pull_request_target
+
 permissions: {}
 
 jobs:
@@ -8,13 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: codfish/actions/setup-node-and-install@v1.0.0
-        with:
-          node-version: lts/*
+      - uses: codfish/actions/setup-node-and-install@v3
 
       - run: npm run lint
 

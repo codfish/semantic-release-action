@@ -8,9 +8,11 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required for semantic-release and tag pushing
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: semantic-release
         id: semantic
@@ -33,6 +35,14 @@ jobs:
             ]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update major version tag
+        if: steps.semantic.outputs.new-release-published == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -fa v${{ steps.semantic.outputs.release-major }} -m "Update v${{ steps.semantic.outputs.release-major }} tag"
+          git push origin v${{ steps.semantic.outputs.release-major }} --force
 
       - name: Dump semantic outputs
         if: steps.semantic.outputs.new-release-published == 'true'
@@ -80,7 +90,7 @@ jobs:
           TAGS="${TAGS},ghcr.io/codfish/semantic-release-action:v${{ steps.semantic.outputs.release-major }}"
           echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
 
-      # Push docker images to GCR 
+      # Push docker images to GCR
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: Build and push docker images to GCR
         uses: docker/build-push-action@v5
