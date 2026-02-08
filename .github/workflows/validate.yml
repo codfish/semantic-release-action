@@ -85,7 +85,7 @@ jobs:
 
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: build and push branch docker image to GCR
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/arm64,linux/amd64
