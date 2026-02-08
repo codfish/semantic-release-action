@@ -93,10 +93,34 @@ jobs:
       # Push docker images to GCR
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: Build and push docker images to GCR
-        uses: docker/build-push-action@v5
+        id: docker_build
+        uses: docker/build-push-action@v6
         if: steps.semantic.outputs.new-release-published == 'true'
         with:
           context: .
           platforms: linux/arm64,linux/amd64
           push: true
           tags: ${{ steps.tags.outputs.tags }}
+
+      - name: Update README with new docker digest
+        if: steps.semantic.outputs.new-release-published == 'true'
+        run: |
+          # Extract just the sha256 hash from the digest
+          DIGEST="${{ steps.docker_build.outputs.digest }}"
+
+          # Update both occurrences of the digest in README.md
+          sed -i.bak "s|ghcr.io/codfish/semantic-release-action@sha256:[a-f0-9]*|ghcr.io/codfish/semantic-release-action@${DIGEST}|g" README.md
+          rm README.md.bak
+
+          # Commit and push if there are changes
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+
+          # Only commit if there are actual changes
+          if git diff --staged --quiet; then
+            echo "No changes to README.md"
+          else
+            git commit -m "docs: update docker digest to ${DIGEST}"
+            git push origin main
+          fi
