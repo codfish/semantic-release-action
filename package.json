@@ -30,7 +30,7 @@
     "semantic-release": "^25.0.3"
   },
   "devDependencies": {
-    "@codfish/eslint-config": "^12.2.0",
+    "@codfish/eslint-config": "^13.0.0",
     "eslint": "^9.39.2",
     "vitest": "^4.0.18"
   }
