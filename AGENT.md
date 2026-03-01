@@ -4,9 +4,9 @@ This file provides guidance to AI agents when working with code in this reposito
 
 ## Project Overview
 
-This is a Docker-based GitHub Action that wraps `semantic-release` to provide automated semantic
-versioning and releasing. The action exports version information as both GitHub Action outputs and
-environment variables for use in subsequent workflow steps.
+This is a Docker-based GitHub Action that wraps `semantic-release` to provide automated semantic versioning and
+releasing. The action exports version information as both GitHub Action outputs and environment variables for use in
+subsequent workflow steps.
 
 - Prefer solutions that keep the action minimal and reliable inside a Docker container.
 - Maintain compatibility with both AMD64 and ARM64 where relevant.
@@ -37,9 +37,7 @@ docker run --rm semantic-release-action
 
 ### Core Components
 
-- **entrypoint.js** (197 lines): Main application logic that orchestrates the semantic-release
-  process
-
+- **entrypoint.js**: Main application logic that orchestrates the semantic-release process
   - `parseInput()`: Handles JSON5 parsing of GitHub Action inputs
   - `installPackages()`: Dynamically installs additional semantic-release plugins
   - `setGitConfigSafeDirectory()`: Configures git for GitHub Actions environment
@@ -51,8 +49,7 @@ docker run --rm semantic-release-action
 ### Key Features to Preserve
 
 - **Input Processing**: Uses JSON5 to parse complex inputs (arrays, objects) from GitHub Actions
-- **Dynamic Plugin Installation**: Installs additional semantic-release plugins via
-  `additional-packages` input
+- **Dynamic Plugin Installation**: Installs additional semantic-release plugins via `additional-packages` input
 - **Dual Output System**: Sets both GitHub Action outputs and environment variables
 - **Multi-platform Support**: Docker images built for AMD64 and ARM64
 
@@ -77,8 +74,8 @@ Both as Action outputs and environment variables:
 - Release metadata: `new-release-published`, `release-notes`, `type`, `channel`
 - Git information: `git-head`, `git-tag`, `name`
 
-**Guidance**: When modifying behavior, ensure both GitHub Action outputs and environment variables
-remain accurate and in sync.
+**Guidance**: When modifying behavior, ensure both GitHub Action outputs and environment variables remain accurate and
+in sync.
 
 ## Development Workflow
 
@@ -88,13 +85,13 @@ remain accurate and in sync.
 - Follows Conventional Commits (enforced by commitlint)
 - Husky pre-commit hooks ensure code quality
 
-**Guidance**: Keep changes minimal, readable, and aligned with existing style. Avoid introducing
-unnecessary dependencies.
+**Guidance**: Keep changes minimal, readable, and aligned with existing style. Avoid introducing unnecessary
+dependencies.
 
 ### CI/CD Pipelines
 
-- **Release workflow** (`.github/workflows/release.yml`): Dogfoods the action itself, builds
-  multi-platform Docker images
+- **Release workflow** (`.github/workflows/release.yml`): Dogfoods the action itself, builds multi-platform Docker
+  images
 - **Validation workflow** (`.github/workflows/validate.yml`): Runs on PRs, performs dry-run testing
 
 **Guidance**:
@@ -110,8 +107,8 @@ unnecessary dependencies.
 
 ## Dynamic Package Installation
 
-Packages specified in the `additional-packages` input are installed at runtime with `npm` using
-flags that avoid modifying lockfiles or running audits.
+Packages specified in the `additional-packages` input are installed at runtime with `npm` using flags that avoid
+modifying lockfiles or running audits.
 
 ```javascript
 const spawn = childProcess.spawnSync('npm', [
@@ -133,8 +130,7 @@ const spawn = childProcess.spawnSync('npm', [
 
 **Guidance**:
 
-- Keep the install minimal and non-persistent; do not write to `package.json` or
-  `package-lock.json`
+- Keep the install minimal and non-persistent; do not write to `package.json` or `package-lock.json`
 - Prefer deterministic installs and avoid adding global state
 
 ## Common Patterns

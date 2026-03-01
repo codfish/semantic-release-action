@@ -1,37 +1,37 @@
 # semantic-release-action
 
-GitHub Action for running `semantic-release`. Respects any semantic-release configuration file in
-your repo or the `release` prop in your `package.json`. Exports [environment variables](#outputs)
-for you to use in subsequent actions containing version numbers.
+GitHub Action for running `semantic-release`. Respects any semantic-release configuration file in your repo or the
+`release` prop in your `package.json`. Exports [environment variables](#outputs) for you to use in subsequent actions
+containing version numbers.
 
-> **Note**: `v5` of this action uses semantic-release v25 & node v24.13.0. `v4` uses
-> semantic-release v24 & node v22.18.0. `v3` uses `semantic-release` v22 & node v20.9.
+> **Note**: `v5` of this action uses semantic-release v25 & node v24.13.0. `v4` uses semantic-release v24 & node
+> v22.18.0. `v3` uses `semantic-release` v22 & node v20.9.
 
 ## Migrating to v5
 
 > [!TIP]
 >
-> **Good news!** While v5 is technically a "breaking" release, **there's a high probability you won't
-> need to make any changes to your workflow**. The breaking changes are in the underlying
-> semantic-release plugins, not in this action's interface.
+> **Good news!** While v5 is technically a "breaking" release, **there's a high probability you won't need to make any
+> changes to your workflow**. The breaking changes are in the underlying semantic-release plugins, not in this action's
+> interface.
 >
 > **What's new in v5:**
 >
-> - **npm OIDC Trusted Publishing support** - You can now publish to npm without storing long-lived
->   `NPM_TOKEN` secrets by using GitHub's OIDC token provider. This is more secure and eliminates
->   credential management overhead. ([Learn more](#npm-oidc-trusted-publishing))
+> - **npm OIDC Trusted Publishing support** - You can now publish to npm without storing long-lived `NPM_TOKEN` secrets
+>   by using GitHub's OIDC token provider. This is more secure and eliminates credential management overhead.
+>   ([Learn more](#npm-oidc-trusted-publishing))
 > - **Updated dependencies** - semantic-release v25, @semantic-release/npm v13, Node v24.13.0
 >
 > **Migration checklist:**
 >
-> 1. Update your workflow to use `@v5` instead of `@v4` (or preferably the recommended docker digest or commit sha below)
+> 1. Update your workflow to use `@v5` instead of `@v4` (or preferably the recommended docker digest or commit sha
+>    below)
 > 2. Test in a branch first (the GitHub plugin has architectural changes that may affect edge cases)
 > 3. _(Optional)_ Migrate to npm OIDC Trusted Publishing for better security
 >
-> See the [full v5.0.0 release notes](https://github.com/codfish/semantic-release-action/releases/tag/v5.0.0)
-> for detailed migration steps.
+> See the [full v5.0.0 release notes](https://github.com/codfish/semantic-release-action/releases/tag/v5.0.0) for
+> detailed migration steps.
 
-<!-- eslint-disable -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
@@ -47,7 +47,6 @@ for you to use in subsequent actions containing version numbers.
   - [Test pull requests in downstream apps before merging](#test-pull-requests-in-downstream-apps-before-merging)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<!-- eslint-enable -->
 
 > [!IMPORTANT]
 >
@@ -73,13 +72,12 @@ steps:
 >
 > **Avoid `registry-url` in setup-node**
 >
-> Do not set the `registry-url` option in `actions/setup-node` when using this action for npm
-> publishing. The `registry-url` configuration causes `setup-node` to generate an `.npmrc` file that
-> interferes with semantic-release's authentication handling, potentially triggering
-> `EINVALIDNPMTOKEN` errors.
+> Do not set the `registry-url` option in `actions/setup-node` when using this action for npm publishing. The
+> `registry-url` configuration causes `setup-node` to generate an `.npmrc` file that interferes with semantic-release's
+> authentication handling, potentially triggering `EINVALIDNPMTOKEN` errors.
 >
-> Instead, manage registry settings through your project's `.npmrc` file. This prevents conflicts
-> and ensures consistent behavior between local development and CI environments.
+> Instead, manage registry settings through your project's `.npmrc` file. This prevents conflicts and ensures consistent
+> behavior between local development and CI environments.
 
 **Using output variables set by `semantic-release-action`:**
 
@@ -147,13 +145,13 @@ steps:
 
 > [!NOTE]
 >
-> If you're _not_ publishing to npm and only want to use this action for GitHub releases, the
-> easiest approach would simply be to add `"private": true,` to your `package.json`.
+> If you're _not_ publishing to npm and only want to use this action for GitHub releases, the easiest approach would
+> simply be to add `"private": true,` to your `package.json`.
 
 > [!NOTE]
 >
-> For scoped packages that you want to be public, you'll need to add
-> `"publishConfig": { "access": "public" },` to your `package.json`.
+> For scoped packages that you want to be public, you'll need to add `"publishConfig": { "access": "public" },` to your
+> `package.json`.
 
 ### Which Version to Use
 
@@ -179,9 +177,9 @@ steps:
 
 > [!NOTE]
 >
-> Whenever you use a custom docker-based GitHub Action like this one, you may notice in your run
-> logs, one of the first steps you'll see will be GA building the image for you. You can speed up
-> runs by pulling pre-built docker images instead of making GitHub Actions build them on every run.
+> Whenever you use a custom docker-based GitHub Action like this one, you may notice in your run logs, one of the first
+> steps you'll see will be GA building the image for you. You can speed up runs by pulling pre-built docker images
+> instead of making GitHub Actions build them on every run.
 
 ```yml
 steps:
@@ -209,8 +207,7 @@ Where `<digest>` is any
 
 ## Why
 
-It's fairly easy to run `semantic-release` as a "host action," aka something that runs directly on
-the VM.
+It's fairly easy to run `semantic-release` as a "host action," aka something that runs directly on the VM.
 
 ```yml
 steps:
@@ -220,43 +217,39 @@ steps:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-If you're just publishing a node package, then this could still work well for you. The problem I
-found with this is when I was in projects where I had subsequent steps/actions in which I wanted to
-know whether a new version was cut.
+If you're just publishing a node package, then this could still work well for you. The problem I found with this is when
+I was in projects where I had subsequent steps/actions in which I wanted to know whether a new version was cut.
 
-> **Use Case:** For instance, in an application where I'm using `semantic-release` to manage GitHub
-> releases, but also building and pushing docker images. Dockerhub has a
-> [nice GitHub integration](https://docs.docker.com/docker-hub/builds/) to handle this for us, but
-> some other registries do not. If I need to cut a new release, then update a docker registry by
-> adding a new tagged build, I'll want to run `semantic-release` and then build a docker image, tag
-> it with a version and push it up. In my case I like to push up tags for `latest`, the semver (i.e.
-> `v1.8.3`), and just the major the version (i.e. `v1`).
+> **Use Case:** For instance, in an application where I'm using `semantic-release` to manage GitHub releases, but also
+> building and pushing docker images. Dockerhub has a
+> [nice GitHub integration](https://docs.docker.com/docker-hub/builds/) to handle this for us, but some other registries
+> do not. If I need to cut a new release, then update a docker registry by adding a new tagged build, I'll want to run
+> `semantic-release` and then build a docker image, tag it with a version and push it up. In my case I like to push up
+> tags for `latest`, the semver (i.e. `v1.8.3`), and just the major the version (i.e. `v1`).
 
 I want to know 1) if semantic-release cut a new version and 2) what the version is.
 
-There's a number of ways to handle this, but the most elegant way I found to do it was to abstract
-it into it's own custom action. It abstracts away whatever logic you need to figure out what that
-new release number is.
+There's a number of ways to handle this, but the most elegant way I found to do it was to abstract it into it's own
+custom action. It abstracts away whatever logic you need to figure out what that new release number is.
 
-This also scales well, just in case I want to add some flexibility and functionality to this action,
-I can easily leverage it across any project.
+This also scales well, just in case I want to add some flexibility and functionality to this action, I can easily
+leverage it across any project.
 
 ## Configuration
 
 You can pass in `semantic-release` configuration options via GitHub Action inputs using `with`.
 
-It's important to note, **NONE** of these inputs are required. Semantic release has a default
-configuration that it will use if you don't provide any.
+It's important to note, **NONE** of these inputs are required. Semantic release has a default configuration that it will
+use if you don't provide any.
 
-Also of note, if you'd like to override the default configuration, and you'd rather not use the
-inputs here, the action will automatically use any
+Also of note, if you'd like to override the default configuration, and you'd rather not use the inputs here, the action
+will automatically use any
 [`semantic-release` configuration](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration-file)
 defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `package.json`)
 
 > [!NOTE]
 >
-> Each input **will take precedence** over options configured in the configuration file and
-> shareable configurations.
+> Each input **will take precedence** over options configured in the configuration file and shareable configurations.
 
 | Input Variable        | Type                        | Description                                                                                                                                                                                                                                                     | Default                                                                                                                                       |
 | --------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -271,24 +264,22 @@ defined in your repo (`.releaserc`, `release.config.js`, `release` prop in `pack
 
 > [!NOTE]
 >
-> Any package specified in `extends` or `additional-packages` will be installed automatically for
-> you as a convenience, allowing you to use this action without adding new dependencies to your
-> application or install deps in a separate action step.
+> Any package specified in `extends` or `additional-packages` will be installed automatically for you as a convenience,
+> allowing you to use this action without adding new dependencies to your application or install deps in a separate
+> action step.
 
 > [!NOTE]
 >
-> `additional-packages` won't get used automatically, setting this variable will just install them
-> so you can use them. You'll need to actually list them in your `plugins` and/or `extends`
-> configuration for **semantic-release** to use them.
+> `additional-packages` won't get used automatically, setting this variable will just install them so you can use them.
+> You'll need to actually list them in your `plugins` and/or `extends` configuration for **semantic-release** to use
+> them.
 
 > [!NOTE]
 >
-> The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use `branches`
-> instead. Previously used in semantic-release v15 to set a single branch on which releases should
-> happen.
+> The `branch` input is **DEPRECATED**. Will continue to be supported for v1. Use `branches` instead. Previously used in
+> semantic-release v15 to set a single branch on which releases should happen.
 
-- **GitHub Actions Inputs:**
-  https://help.github.com/en/articles/metadata-syntax-for-github-actions#inputs
+- **GitHub Actions Inputs:** https://help.github.com/en/articles/metadata-syntax-for-github-actions#inputs
 - **Semantic Release Configuration:**
   https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md
 
@@ -329,9 +320,9 @@ steps:
 
 ### Outputs
 
-`semantic-release-action` sets both output variables and environment variables because why not?
-Allows users the ability to use whichever they want. I don't know or understand every use case there
-might be so this is a way to cover more cases.
+`semantic-release-action` sets both output variables and environment variables because why not? Allows users the ability
+to use whichever they want. I don't know or understand every use case there might be so this is a way to cover more
+cases.
 
 **Docs:** https://help.github.com/en/articles/metadata-syntax-for-github-actions#outputs
 
@@ -371,9 +362,9 @@ might be so this is a way to cover more cases.
 
 ### Including all commit types in a release
 
-By default, `semantic-release` only includes `fix`, `feat`, and `perf` commit types in the release.
-A lot of projects want to include all commit types in their release notes, while still using
-`semantic-release`'s commit analyzer to only create releases for `fix`, `feat`, and `perf` commits.
+By default, `semantic-release` only includes `fix`, `feat`, and `perf` commit types in the release. A lot of projects
+want to include all commit types in their release notes, while still using `semantic-release`'s commit analyzer to only
+create releases for `fix`, `feat`, and `perf` commits.
 
 ```yml
 - uses: codfish/semantic-release-action@v5
@@ -408,23 +399,21 @@ A lot of projects want to include all commit types in their release notes, while
       ]
 ```
 
-This configuration uses the `conventional-changelog-conventionalcommits` package to generate release
-notes & configures `@semantic-release/release-notes-generator` to include all commit types. Tweaking
-the `types` array will allow you to include or exclude specific commit types & group them to your
-liking.
+This configuration uses the `conventional-changelog-conventionalcommits` package to generate release notes & configures
+`@semantic-release/release-notes-generator` to include all commit types. Tweaking the `types` array will allow you to
+include or exclude specific commit types & group them to your liking.
 
 > [!IMPORTANT]
 >
-> This example uses the `additional-packages` input to install the
-> `conventional-changelog-conventionalcommits` package. This is necessary because `semantic-release`
-> doesn't install it by default & it's required for the customization of the `presetConfig` in the
-> `@semantic-release/release-notes-generator` plugin.
+> This example uses the `additional-packages` input to install the `conventional-changelog-conventionalcommits` package.
+> This is necessary because `semantic-release` doesn't install it by default & it's required for the customization of
+> the `presetConfig` in the `@semantic-release/release-notes-generator` plugin.
 
 ### npm OIDC Trusted Publishing
 
-**New in v5!** With semantic-release v25 and @semantic-release/npm v13, you can now publish to npm
-using OIDC-based trusted publishing instead of long-lived `NPM_TOKEN` secrets. This is more secure
-and eliminates the need to store sensitive credentials as repository secrets.
+**New in v5!** With semantic-release v25 and @semantic-release/npm v13, you can now publish to npm using OIDC-based
+trusted publishing instead of long-lived `NPM_TOKEN` secrets. This is more secure and eliminates the need to store
+sensitive credentials as repository secrets.
 
 **Benefits:**
 
@@ -445,8 +434,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write  # Required for OIDC authentication
-      contents: write  # Required to create releases
+      id-token: write # Required for OIDC authentication
+      contents: write # Required to create releases
 
     steps:
       - uses: actions/checkout@v5
@@ -474,9 +463,9 @@ jobs:
 
 ## Maintenance
 
-> The release workflow automatically updates the major version tag (v3, v4, v5, etc.) to point to the
-> latest release for that major version. This allows users binding to the major version tag to
-> automatically receive the most recent stable minor/patch releases.
+> The release workflow automatically updates the major version tag (v3, v4, v5, etc.) to point to the latest release for
+> that major version. This allows users binding to the major version tag to automatically receive the most recent stable
+> minor/patch releases.
 
 This happens automatically in the [release workflow](.github/workflows/release.yml) after each successful release.
 
@@ -486,19 +475,17 @@ If you need to update the major version tag manually:
 git tag -fa v5 -m "Update v5 tag" && git push origin v5 --force
 ```
 
-**Reference**:
-https://github.com/actions/toolkit/blob/main/docs/action-versioning.md#recommendations
+**Reference**: https://github.com/actions/toolkit/blob/main/docs/action-versioning.md#recommendations
 
 ### Test pull requests in downstream apps before merging
 
-Our validation workflow builds and publishes a multi-arch Docker image to GitHub Container Registry
-for every pull request, tagging the image with the PR's branch name. You can point downstream
-repositories at this branch-tagged image to try changes before merging.
+Our validation workflow builds and publishes a multi-arch Docker image to GitHub Container Registry for every pull
+request, tagging the image with the PR's branch name. You can point downstream repositories at this branch-tagged image
+to try changes before merging.
 
 ```yml
 - uses: docker://ghcr.io/codfish/semantic-release-action:<branch-name>
 ```
 
-Replace `<branch-name>` with the PR's branch name (for example, `feature/xyz`). Switch back to your
-pinned version (for example, `codfish/semantic-release-action@v5` or a specific digest) when you're
-done testing.
+Replace `<branch-name>` with the PR's branch name (for example, `feature/xyz`). Switch back to your pinned version (for
+example, `codfish/semantic-release-action@v5` or a specific digest) when you're done testing.
