@@ -37,7 +37,7 @@ docker run --rm semantic-release-action
 
 ### Core Components
 
-- **entrypoint.js** (197 lines): Main application logic that orchestrates the semantic-release process
+- **entrypoint.js**: Main application logic that orchestrates the semantic-release process
   - `parseInput()`: Handles JSON5 parsing of GitHub Action inputs
   - `installPackages()`: Dynamically installs additional semantic-release plugins
   - `setGitConfigSafeDirectory()`: Configures git for GitHub Actions environment

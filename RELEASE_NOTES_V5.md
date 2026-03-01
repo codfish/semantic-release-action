@@ -3,14 +3,14 @@
 ## Breaking Changes
 
 Upgraded to semantic-release v25 with breaking changes in the GitHub plugin. Any breaking changes from v25 apply to this
-github action version except for Node version requirements. Because this is a docker-based github action, the version of
-node in use is defined inside of the docker image, not by the consuming runner or your code.
+GitHub action version except for Node version requirements. Because this is a Docker-based github action, the version of
+Node.js in use is defined inside of the Docker image, not by the consuming runner or your code.
 
 ### What Changed
 
 - **@semantic-release/github v12**: The GitHub plugin no longer uses the GitHub Search API (`/search/issues` endpoint).
   It now uses GraphQL queries exclusively for issue retrieval. This architectural change may affect issue management in
-  edge cases. See [github plugin v12 release notes](https://github.com/semantic-release/github/releases/tag/v12.0.0).
+  edge cases. See [GitHub plugin v12 release notes](https://github.com/semantic-release/github/releases/tag/v12.0.0).
 
 - **semantic-release v25**: Upgraded from v24.2.7 to v25.0.3
   - @semantic-release/npm upgraded to v13
@@ -41,10 +41,10 @@ node in use is defined inside of the docker image, not by the consuming runner o
 
 ## Version History
 
-- `v5` uses semantic-release v25 & node v24.13.0
-- `v4` uses semantic-release v24 & node v22.18.0
-- `v3` uses semantic-release v22 & node v20.9
-- `v2` uses semantic-release v20 & node v18.7
+- `v5` uses semantic-release v25 & Node.js v24.13.0
+- `v4` uses semantic-release v24 & Node.js v22.18.0
+- `v3` uses semantic-release v22 & Node.js v20.9
+- `v2` uses semantic-release v20 & Node.js v18.7
 
 ## Full Changelog
 
@@ -52,7 +52,7 @@ node in use is defined inside of the docker image, not by the consuming runner o
 
 ### Features
 
-- upgrade to semantic-release v25, @actions/core v3, Node v24.13.0, and update dev tooling
+- upgrade to semantic-release v25, @actions/core v3, Node.js v24.13.0, and update dev tooling
 
 ### Dependencies
 
@@ -77,5 +77,5 @@ node in use is defined inside of the docker image, not by the consuming runner o
 ---
 
 **Note**: This release follows the same versioning strategy as v4.0.0: breaking changes from semantic-release and its
-plugins (except Node version requirements) apply to this action. The GitHub Search API removal in
+plugins (except Node.js version requirements) apply to this action. The GitHub Search API removal in
 @semantic-release/github v12 is a real architectural breaking change that justifies the v5.0.0 major version bump.
