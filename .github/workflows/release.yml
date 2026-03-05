@@ -94,7 +94,7 @@ jobs:
       # Dockerhub is auto synced with the repo, no need to explicitly deploy
       - name: Build and push docker images to GCR
         id: docker_build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         if: steps.semantic.outputs.new-release-published == 'true'
         with:
           context: .
